@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"github.com/elastic/go-elasticsearch/v7"
 	"io"
-	"log"
 	"strings"
 )
 
@@ -22,18 +21,8 @@ type esDb struct {
 	client *elasticsearch.Client
 }
 
-// TODO: configurable host/port/etc.
-func NewEsDb() (Db, error) {
-	cfg := elasticsearch.Config{
-		Addresses: []string{
-			"http://localhost:9200",
-		},
-	}
-	client, err := elasticsearch.NewClient(cfg)
-	if err != nil {
-		return nil, err
-	}
-	return &esDb{client: client}, nil
+func NewEsDb(client *elasticsearch.Client) Db {
+	return &esDb{client: client}
 }
 
 type getResponse struct {
@@ -103,33 +92,10 @@ func (db *esDb) FetchAll(t EntityType, ids []EntityId) ([]Entity, error) {
 	return entities, nil
 }
 
-type searchResponseHit struct {
-	Id     string        `json:"_id"`
-	Index  string        `json:"_index"`
-	Score  float64       `json:"_score"`
-	Source GenericEntity `json:"_source"`
-}
-
-func (h *searchResponseHit) ToEntity() Entity {
+func (h *EsSearchResponseHit) ToEntity() Entity {
 	source := h.Source
 	source["id"] = h.Id
 	return source
-}
-
-type searchResponseHitsTotal struct {
-	Relation string
-	Value    int
-}
-
-type searchResponseHits struct {
-	Hits     []searchResponseHit
-	MaxScore float64 `json:"max_score"`
-	Total    searchResponseHitsTotal
-}
-
-type searchResponse struct {
-	Hits searchResponseHits
-	Took int
 }
 
 func (db *esDb) Random(t EntityType) (Entity, error) {
@@ -143,16 +109,15 @@ func (db *esDb) Random(t EntityType) (Entity, error) {
 		},
 	}
 	if err := json.NewEncoder(&buf).Encode(query); err != nil {
-		log.Fatalf("Error encoding query: %s", err)
+		return nil, err
 	}
 
 	// Perform the search request.
 	response, err := db.client.Search(
+		db.client.Search.WithBody(&buf),
 		db.client.Search.WithContext(context.Background()),
 		db.client.Search.WithIndex(string(t)),
-		db.client.Search.WithBody(&buf),
 		db.client.Search.WithTrackTotalHits(true),
-		db.client.Search.WithPretty(),
 	)
 	if err != nil {
 		return nil, err
@@ -163,7 +128,7 @@ func (db *esDb) Random(t EntityType) (Entity, error) {
 		return nil, responseToError(response.Body)
 	}
 
-	var searchResponse searchResponse
+	var searchResponse EsSearchResponse
 	if err := json.NewDecoder(response.Body).Decode(&searchResponse); err != nil {
 		return nil, err
 	}

@@ -33,9 +33,32 @@ func registerGraphiql() {
 	http.Handle("/", graphiqlHandler)
 }
 
-func initHttp(db Db) {
+func registerSearch(index Index) {
+	http.HandleFunc("/search", func(response http.ResponseWriter, request *http.Request) {
+		query, ok := RequiredParamString(request, "q")
+		if !ok {
+			http.Error(response, "Missing required param 'q'.", http.StatusBadRequest)
+			return
+		}
+		size, ok := RequiredParamInt(request, "size")
+		if !ok {
+			size = 100
+		}
+
+		results, err := index.Search(query, size)
+		if err != nil {
+			http.Error(response, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		JsonResponse(response, results, ParamPassed(request, "pretty"))
+	})
+}
+
+func initHttp(db Db, index Index) {
 	registerGraphiql()
 	registerGraphql(db)
+	registerSearch(index)
 }
 
 func startHttp() {
@@ -53,12 +76,14 @@ func startHttp() {
 
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
-
-	db, err := NewEsDb()
+	client, err := NewEsClient()
 	if err != nil {
-		panic(err)
+		panic(client)
 	}
 
-	initHttp(db)
+	db := NewEsDb(client)
+	index := NewEsIndex(client)
+
+	initHttp(db, index)
 	startHttp()
 }
