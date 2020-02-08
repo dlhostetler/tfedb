@@ -17,7 +17,7 @@ import (
 	"syscall"
 )
 
-func requiredParamString(request *http.Request, param string) (string, bool) {
+func paramString(request *http.Request, param string) (string, bool) {
 	queries, ok := request.URL.Query()[param]
 	if !ok || len(queries[0]) < 1 {
 		return "", false
@@ -25,8 +25,8 @@ func requiredParamString(request *http.Request, param string) (string, bool) {
 	return queries[0], true
 }
 
-func requiredParamInt(request *http.Request, param string) (int, bool) {
-	s, ok := requiredParamString(request, param)
+func pParamInt(request *http.Request, param string) (int, bool) {
+	s, ok := paramString(request, param)
 	if !ok {
 		return 0, false
 	}
@@ -54,8 +54,8 @@ func jsonResponse(response http.ResponseWriter, body interface{}, pretty bool) {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	response.WriteHeader(200)
 	response.Header().Set("Content-Type", "application/json")
+	response.WriteHeader(200)
 	if _, err := response.Write(js); err != nil {
 		fmt.Println(err)
 	}
@@ -141,17 +141,18 @@ func respondError(path string, err error, response http.ResponseWriter) {
 func registerSearch(mux *http.ServeMux, index Index) {
 	path := "/search"
 	mux.HandleFunc(path, func(response http.ResponseWriter, request *http.Request) {
-		query, ok := requiredParamString(request, "q")
+		query, ok := paramString(request, "q")
 		if !ok {
 			http.Error(response, "Missing required param 'q'.", http.StatusBadRequest)
 			return
 		}
-		size, ok := requiredParamInt(request, "size")
+		fields, _ := request.URL.Query()["fields"]
+		size, ok := pParamInt(request, "size")
 		if !ok {
 			size = 100
 		}
 
-		results, err := index.Search(query, size)
+		results, err := index.Search(query, fields, size)
 		if err != nil {
 			respondError(path, err, response)
 			return

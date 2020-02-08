@@ -8,18 +8,19 @@ import (
 )
 
 type SearchResult struct {
-	Matches map[string][]string
-	Id      EntityId
-	Type    EntityType
+	Fields  map[string]interface{} `json:"fields"`
+	Matches map[string][]string    `json:"matches"`
+	Id      EntityId               `json:"id"`
+	Type    EntityType             `json:"type"`
 }
 
 type SearchResults struct {
-	Results []*SearchResult
-	Total   int
+	Results []*SearchResult `json:"results"`
+	Total   int             `json:"total"`
 }
 
 type Index interface {
-	Search(query string, size int) (*SearchResults, error)
+	Search(query string, fields []string, size int) (*SearchResults, error)
 }
 
 type esIndex struct {
@@ -30,7 +31,7 @@ func NewEsIndex(client *elasticsearch.Client) Index {
 	return &esIndex{client: client}
 }
 
-func (index *esIndex) Search(q string, size int) (*SearchResults, error) {
+func (index *esIndex) Search(q string, fields []string, size int) (*SearchResults, error) {
 	var buf bytes.Buffer
 	query := map[string]interface{}{
 		"size": size,
@@ -44,6 +45,11 @@ func (index *esIndex) Search(q string, size int) (*SearchResults, error) {
 				"*": map[string]interface{}{},
 			},
 		},
+	}
+	if len(fields) == 0 {
+		query["_source"] = false
+	} else {
+		query["_source"] = fields
 	}
 	if err := json.NewEncoder(&buf).Encode(query); err != nil {
 		return nil, err
@@ -72,6 +78,7 @@ func (index *esIndex) Search(q string, size int) (*SearchResults, error) {
 	results := make([]*SearchResult, len(searchResponse.Hits.Hits))
 	for i, hit := range searchResponse.Hits.Hits {
 		results[i] = &SearchResult{
+			Fields:  hit.Source,
 			Matches: hit.Highlight,
 			Id:      EntityId(hit.Id),
 			Type:    EntityType(hit.Index),
