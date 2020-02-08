@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/friendsofgo/graphiql"
 	"github.com/graphql-go/handler"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"math/rand"
 	"net/http"
 	"os"
@@ -65,16 +65,17 @@ func startHttp() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
-		log.Printf("Defaulting to port %s", port)
+		log.Info("Using default port.")
 	}
 
-	log.Printf("Listening on port %s", port)
+	log.WithField("port", port).Info("Server is listening.")
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 }
 
 func main() {
+	log.Info("Starting tfedb api.")
 	rand.Seed(time.Now().UTC().UnixNano())
 	client, err := NewEsClient()
 	if err != nil {

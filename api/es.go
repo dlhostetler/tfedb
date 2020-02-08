@@ -1,14 +1,23 @@
 package main
 
-import "github.com/elastic/go-elasticsearch/v7"
+import (
+	"github.com/elastic/go-elasticsearch/v7"
+	log "github.com/sirupsen/logrus"
+	"os"
+	"strings"
+)
 
-// TODO: configurable host/port/etc.
 func NewEsClient() (*elasticsearch.Client, error) {
-	cfg := elasticsearch.Config{
-		Addresses: []string{
-			"http://localhost:9200",
-		},
+	address := os.Getenv("ES_URL")
+	if address == "" {
+		address = "http://localhost:9200"
+		log.Info("Using default ES url.")
 	}
+	addresses := strings.Split(address, ",")
+	cfg := elasticsearch.Config{
+		Addresses: addresses,
+	}
+	log.WithField("urls", addresses).Info("Connecting to ES.")
 	return elasticsearch.NewClient(cfg)
 }
 
