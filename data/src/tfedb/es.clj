@@ -1,22 +1,61 @@
 (ns tfedb.es
-  (:require [clojure.data.json :as json])
-  (:import (org.elasticsearch.client RestHighLevelClient RestClient RequestOptions)
-           (org.elasticsearch.client.indices CreateIndexRequest GetIndexRequest)
-           (org.elasticsearch.common.xcontent XContentType)
+  (:require [clojure.data.json :as json]
+            [clojure.java.io :as java.io]
+            [robert.bruce :as bruce]
+            [clojure.string :as str])
+  (:import (java.net URL ConnectException)
            (org.apache.http HttpHost)
-           (org.elasticsearch.action.index IndexRequest)
+           (org.elasticsearch.action.admin.cluster.health ClusterHealthRequest)
            (org.elasticsearch.action.admin.indices.delete DeleteIndexRequest)
-           (org.elasticsearch.action.bulk BulkRequest)))
+           (org.elasticsearch.action.bulk BulkRequest)
+           (org.elasticsearch.action.index IndexRequest)
+           (org.elasticsearch.client RestHighLevelClient RestClient RequestOptions)
+           (org.elasticsearch.client.indices CreateIndexRequest GetIndexRequest)
+           (org.elasticsearch.cluster.health ClusterHealthStatus)
+           (org.elasticsearch.common.xcontent XContentType)))
 
-;; new RestHighLevelClient(
-;        RestClient.builder(
-;                new HttpHost("localhost", 9200, "http"),
-;                new HttpHost("localhost", 9201, "http")))
+(defn- url-to-host [url-str]
+  (let [url ^URL (java.io/as-url url-str)]
+    (HttpHost. (.getHost url) (.getPort url) (.getProtocol url))))
+
+(defn- es-urls []
+  (if-let [urls (System/getenv "ES_URL")]
+    (str/split urls #",")
+    ["http://localhost:9200"]))
+
 (defn ->client []
-  (-> [(HttpHost. "localhost" 9200 "http")]
-      into-array
-      (RestClient/builder)
-      (RestHighLevelClient.)))
+  (println "Attempting to create ES client.")
+  (->> (es-urls)
+       (map url-to-host)
+       into-array
+       (RestClient/builder)
+       (RestHighLevelClient.)))
+
+(defn wait-for-green [^RestHighLevelClient client]
+  (let [request (-> (ClusterHealthRequest.)
+                    (.timeout "30s")
+                    ;; try waiting for green, but timeout for status purposes
+                    (.waitForStatus ClusterHealthStatus/GREEN))]
+    (-> client
+        (.cluster)
+        (.health request RequestOptions/DEFAULT)))
+  client)
+
+(defn ->safe-client []
+  (let [client (->client)]
+    (bruce/try-try-again
+      {:decay (fn [ms]
+                ;; double the wait every time, but only up to a max of 30s
+                (min (* 2 ms) 30000))
+       :error-hook (fn [ex]
+                     (if (instance? ConnectException ex)
+                       (do
+                         (println "ES is unavailable. Trying again.")
+                         true)
+                       (throw ex)))
+       :sleep 1000
+       :tries :unlimited}
+      #(wait-for-green client))))
 
 (defn ^IndexRequest ->index-request [index document]
   (let [d (-> document

@@ -203,7 +203,7 @@
                           :skills es-kw}}})
 
 (defn -main [& args]
-  (with-open [client (es/->client)]
+  (with-open [client (es/->safe-client)]
     (doseq [[entity-type entities-by-id] (entities/entities-by-type)
             :let [mapping (get mappings entity-type)]]
       (println "Indexing" (str (name entity-type) "..."))

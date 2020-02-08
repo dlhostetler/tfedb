@@ -5,7 +5,8 @@
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/data.json "0.2.6"]
                  [org.elasticsearch.client/elasticsearch-rest-high-level-client "7.5.2"]
-                 [prismatic/plumbing "0.5.5"]]
+                 [prismatic/plumbing "0.5.5"]
+                 [robert/bruce "0.8.0"]]
   :main tfedb.main
   :profiles {:uberjar {:aot :all}
              :dev {:plugins [[lein-binplus "0.6.4"]]}})
