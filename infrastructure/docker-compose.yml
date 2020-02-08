@@ -1,0 +1,75 @@
+version: '3.7'
+services:
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    container_name: es01
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - bootstrap.memory_lock=true
+      - cluster.initial_master_nodes=es01,es02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es02
+      - node.name=es01
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - tfedb
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    container_name: es02
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - bootstrap.memory_lock=true
+      - cluster.initial_master_nodes=es01,es02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01
+      - node.name=es02
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es02:/usr/share/elasticsearch/data
+    networks:
+      - tfedb
+  data:
+    image: tfedb-data:latest
+    container_name: provision
+    depends_on:
+      - es01
+      - es02
+    deploy:
+      restart_policy:
+        condition: none
+    environment:
+      ES_URL: 'http://es01:9200,http://es02:9200'
+    networks:
+      - tfedb
+  api:
+    image: tfedb-api:latest
+    container_name: api
+    depends_on:
+      - es01
+      - es02
+    environment:
+      ES_URL: 'http://es01:9200,http://es02:9200'
+    networks:
+      - tfedb
+    ports:
+      - 8080:8080
+
+volumes:
+  es01:
+    driver: local
+  es02:
+    driver: local
+
+networks:
+  tfedb:
+    driver: bridge
