@@ -7,12 +7,14 @@ import (
 	"github.com/graphql-go/handler"
 	"github.com/rs/cors"
 	log "github.com/sirupsen/logrus"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
 	"regexp"
 	"strconv"
 	"strings"
+	"syscall"
 )
 
 func requiredParamString(request *http.Request, param string) (string, bool) {
@@ -94,8 +96,51 @@ func registerGraphiql(mux *http.ServeMux) {
 // Search
 // ------
 
+func respondUnavailable(response http.ResponseWriter) {
+	http.Error(response, "Service unavailable.", http.StatusServiceUnavailable)
+}
+
+func respondUnexpectedError(response http.ResponseWriter) {
+	http.Error(response, "An unexpected error has occurred.", http.StatusInternalServerError)
+}
+
+func respondError(path string, err error, response http.ResponseWriter) {
+	logEntry := log.WithError(err).WithField("path", path)
+	if netError, ok := err.(net.Error); ok && netError.Timeout() {
+		logEntry.Error("Server timed out.")
+		respondUnexpectedError(response)
+		return
+	}
+	switch t := err.(type) {
+	case *net.OpError:
+		if t.Op == "dial" {
+			logEntry.Error("Dial error.")
+			respondUnavailable(response)
+			return
+		} else if t.Op == "read" {
+			logEntry.Error("Read error.")
+			respondUnavailable(response)
+			return
+		}
+		logEntry.Error("Unexpected op error.")
+
+	case syscall.Errno:
+		if t == syscall.ECONNREFUSED {
+			logEntry.Error("Connection refused.")
+			respondUnexpectedError(response)
+			return
+		}
+		logEntry.Error("Unexpected sys error.")
+	default:
+		logEntry.Error("Unexpected error.")
+	}
+	// none of the above clauses handled the error
+	respondUnexpectedError(response)
+}
+
 func registerSearch(mux *http.ServeMux, index Index) {
-	mux.HandleFunc("/search", func(response http.ResponseWriter, request *http.Request) {
+	path := "/search"
+	mux.HandleFunc(path, func(response http.ResponseWriter, request *http.Request) {
 		query, ok := requiredParamString(request, "q")
 		if !ok {
 			http.Error(response, "Missing required param 'q'.", http.StatusBadRequest)
@@ -108,10 +153,9 @@ func registerSearch(mux *http.ServeMux, index Index) {
 
 		results, err := index.Search(query, size)
 		if err != nil {
-			http.Error(response, err.Error(), http.StatusInternalServerError)
+			respondError(path, err, response)
 			return
 		}
-
 		jsonResponse(response, results, isParamPassed(request, "pretty"))
 	})
 }
