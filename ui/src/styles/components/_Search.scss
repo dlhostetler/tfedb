@@ -28,6 +28,10 @@
   display: block;
 }
 
+.search-input .suggestions .no-results {
+  padding: 5px;
+}
+
 .search-input .suggestions .suggestion {
   border-bottom: 1px solid;
   display: flex;

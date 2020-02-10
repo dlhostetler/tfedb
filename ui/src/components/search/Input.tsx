@@ -4,6 +4,7 @@ import { debounce } from 'lodash';
 import * as api from '../../api';
 import { SearchResult, SearchSuggestion } from './types';
 import Suggestion from './Suggestion';
+import Suggestions from './Suggestions';
 
 interface SearchInputProps {
   autoFocus: boolean;
@@ -86,15 +87,7 @@ class SearchInput extends React.Component<SearchInputProps, SearchInputState> {
           onKeyDown={this.onKeyDown}
           type="search"
         />
-        <div className="suggestions">
-          {suggestions.map(suggestion => (
-            <Suggestion
-              className="suggestion"
-              key={`${suggestion.type}.${suggestion.id}`}
-              suggestion={suggestion}
-            />
-          ))}
-        </div>
+        <Suggestions className="suggestions" suggestions={suggestions} />
       </div>
     );
   }
