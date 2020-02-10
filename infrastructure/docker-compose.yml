@@ -39,6 +39,7 @@ services:
       CORS_DOMAINS: "*.tfedb.com,localhost"
       ES_URL: 'http://es:9200'
     networks:
+      - default
       - external
     # Exposed for development.
     ports:

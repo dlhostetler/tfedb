@@ -1,0 +1,52 @@
+@import 'src/styles/Colors';
+
+.search-input {
+  position: relative;
+}
+
+.search-input input[type='search'] {
+  border-radius: 10px;
+  font-size: 2em;
+  outline: none;
+  padding: 5px;
+  width: 100%;
+}
+
+.search-input.suggestions-visible input[type='search'] {
+  border-radius: 10px 10px 0 0;
+}
+
+.search-input .suggestions {
+  border: 1px solid $primaryColor;
+  border-top: none;
+  display: none;
+  position: absolute;
+  width: calc(100% - 2px);
+}
+
+.search-input.suggestions-visible .suggestions {
+  display: block;
+}
+
+.search-input .suggestions .suggestion {
+  border-bottom: 1px solid;
+  display: flex;
+  padding: 5px;
+  position: relative;
+}
+
+.search-input .suggestions .suggestion:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.search-input .suggestions .suggestion .description {
+  flex-grow: 1;
+  margin-right: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-input .suggestions .suggestion .type {
+  font-size: 0.8em;
+}

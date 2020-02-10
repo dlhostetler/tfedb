@@ -1,0 +1,49 @@
+@import 'src/styles/Pages';
+@import 'src/styles/components/Search';
+@import 'styles/Colors';
+
+body {
+  background-color: black;
+  color: $primaryColor;
+  font-family: 'Inconsolata', monospace;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body::after {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0.25) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  bottom: 0;
+  content: '';
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+body a {
+  color: $primaryColor;
+  text-decoration: none;
+}
+
+input {
+  background-color: transparent;
+  border: 1px solid $primaryColor;
+  color: $primaryColor;
+  font-family: 'Inconsolata', monospace;
+}
+
+.center {
+  left: 50%;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
