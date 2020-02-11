@@ -1,7 +1,7 @@
 export interface SearchResult {
   fields: { [key: string]: any };
   id: string;
-  matches: { [key: string]: string };
+  matches: { [key: string]: string[] };
   type: string;
 }
 

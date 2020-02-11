@@ -1,0 +1,14 @@
+.front .search {
+  top: 40%;
+  width: 400px;
+}
+
+.front .search .search-input input[type='search'] {
+  border-radius: 10px;
+  font-size: 2em;
+  padding: 5px;
+}
+
+.front .search .search-input.suggestions-visible input[type='search'] {
+  border-radius: 10px 10px 0 0;
+}

@@ -2,12 +2,13 @@ import { SearchSuggestion } from './types';
 import React from 'react';
 import EntityLink from '../links/EntityLink';
 
-interface SuggestionProps {
+interface Props {
   className: string;
+  onSuggestion?: (suggestion: SearchSuggestion) => void;
   suggestion: SearchSuggestion;
 }
 
-const Suggestion: React.FunctionComponent<SuggestionProps> = props => {
+const Suggestion: React.FunctionComponent<Props> = props => {
   const { className, suggestion } = props;
   return (
     <EntityLink className={className} id={suggestion.id} type={suggestion.type}>

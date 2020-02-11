@@ -3,17 +3,20 @@ import classnames from 'classnames';
 import { debounce } from 'lodash';
 import * as api from '../../api';
 import { SearchResult, SearchSuggestion } from './types';
-import Suggestion from './Suggestion';
 import Suggestions from './Suggestions';
 
 interface SearchInputProps {
   autoFocus: boolean;
+  className?: string;
   onSearch: (text: string) => void;
+  onSuggestion?: (suggestion: SearchSuggestion) => void;
+  query?: string;
 }
 
 interface SearchInputState {
   suggestions: SearchSuggestion[];
   suggestionsVisible: boolean;
+  value: string;
 }
 
 function resultToSuggestion(result: SearchResult): SearchSuggestion {
@@ -36,6 +39,7 @@ class SearchInput extends React.Component<SearchInputProps, SearchInputState> {
     this.state = {
       suggestions: [],
       suggestionsVisible: false,
+      value: props.query || '',
     };
   }
 
@@ -47,10 +51,10 @@ class SearchInput extends React.Component<SearchInputProps, SearchInputState> {
     });
   }
 
-  suggest = debounce(this.suggestRaw, 1000);
+  suggest = debounce(this.suggestRaw, 250);
 
-  onChange = async (e: React.FormEvent<HTMLInputElement>) => {
-    const text = e.currentTarget.value;
+  async startSuggest() {
+    const text = this.state.value;
     if (!text) {
       this.suggest.cancel();
       this.setState({
@@ -60,6 +64,12 @@ class SearchInput extends React.Component<SearchInputProps, SearchInputState> {
       return;
     }
     this.suggest(text);
+  }
+
+  onChange = async (e: React.FormEvent<HTMLInputElement>) => {
+    this.setState({
+      value: e.currentTarget.value,
+    });
   };
 
   onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -67,22 +77,35 @@ class SearchInput extends React.Component<SearchInputProps, SearchInputState> {
       return;
     }
     const { onSearch } = this.props;
+    const { value } = this.state;
     this.suggest.cancel();
-    onSearch(e.currentTarget.value);
+    this.setState({
+      suggestionsVisible: false,
+    });
+    onSearch(value);
   };
 
+  async componentDidUpdate(
+    prevProps: Readonly<SearchInputProps>,
+    prevState: Readonly<SearchInputState>
+  ) {
+    if (prevState.value !== this.state.value) {
+      this.startSuggest();
+    }
+  }
+
   render() {
-    const { autoFocus } = this.props;
-    const { suggestions, suggestionsVisible } = this.state;
+    const { autoFocus, className } = this.props;
+    const { suggestions, suggestionsVisible, value } = this.state;
     return (
       <div
-        className={classnames({
-          'search-input': true,
+        className={classnames('search-input', className, {
           'suggestions-visible': suggestionsVisible,
         })}
       >
         <input
           autoFocus={autoFocus}
+          value={value}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
           type="search"

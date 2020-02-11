@@ -1,19 +1,13 @@
 @import 'src/styles/Colors';
 
 .search-input {
+  display: inline-block;
   position: relative;
 }
 
 .search-input input[type='search'] {
-  border-radius: 10px;
-  font-size: 2em;
   outline: none;
-  padding: 5px;
   width: 100%;
-}
-
-.search-input.suggestions-visible input[type='search'] {
-  border-radius: 10px 10px 0 0;
 }
 
 .search-input .suggestions {
@@ -25,6 +19,7 @@
 }
 
 .search-input.suggestions-visible .suggestions {
+  background-color: $bgColor;
   display: block;
 }
 
@@ -37,6 +32,7 @@
   display: flex;
   padding: 5px;
   position: relative;
+  text-align: left;
 }
 
 .search-input .suggestions .suggestion:hover {

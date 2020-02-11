@@ -1,9 +1,10 @@
-@import 'src/styles/Pages';
-@import 'src/styles/components/Search';
 @import 'styles/Colors';
+@import 'styles/components/Search';
+@import 'styles/pages/Front';
+@import 'styles/pages/Search';
 
 body {
-  background-color: black;
+  background-color: $bgColor;
   color: $primaryColor;
   font-family: 'Inconsolata', monospace;
   height: 100%;
@@ -46,4 +47,43 @@ input {
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+
+#header {
+  background-color: $bgColor;
+  border-bottom: solid 1px $primaryColor;
+  display: flex;
+  height: 32px;
+  left: 0;
+  padding: 5px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+
+#header .right {
+  flex-grow: 1;
+  margin-right: 15px;
+  text-align: right;
+}
+
+#header .search-input {
+  margin-top: 4px;
+  width: 300px;
+}
+
+#header .search-input input[type='search'] {
+  font-size: 1.2em;
+}
+
+#content {
+  background-color: $bgColor;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  padding: 5px;
+  position: absolute;
+  right: 0;
+  top: 43px;
 }

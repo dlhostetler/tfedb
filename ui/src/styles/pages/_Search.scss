@@ -1,0 +1,45 @@
+@import '../Colors';
+
+#searchResults .results {
+  margin: 0 auto;
+  overflow: auto;
+  width: 640px;
+}
+
+#searchResults .results .result {
+  padding: 10px;
+}
+
+#searchResults .results .result > .name {
+  font-size: 1.2em;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+#searchResults .results .result > .type {
+  font-size: 0.9em;
+  margin-top: 2px;
+}
+
+#searchResults .results .result > .matches {
+}
+
+#searchResults .results .result > .matches .match {
+  margin-top: 5px;
+}
+
+#searchResults .results .result > .matches .match .field {
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.25);
+  font-size: 0.9em;
+  opacity: 0.75;
+  padding-bottom: 5px;
+}
+
+#searchResults .results .result > .matches .match .value {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+#searchResults .results .result > .matches .match .value .highlight {
+  color: $highlightColor;
+}
