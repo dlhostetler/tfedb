@@ -1,43 +1,66 @@
 version: '3.7'
 services:
   # Elasticsearch
-  es:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+  # =============
+  # Defines two explicit services for ES that know about and talk to each other. To
+  # actually scale automatically there should single service. However, to do that
+  # there needs to be more than one node, with global replication so that the
+  # names can be known up-front, since ES's discovery needs a starting point.
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.0
     environment:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - bootstrap.memory_lock=true
-      - cluster.initial_master_nodes=es
+      - cluster.initial_master_nodes=es01
       - cluster.name=tfedb
-      - node.name=es
+      - discovery.seed_hosts=es02
+      - node.name=es01
+    # Exposed for development.
+    ports:
+      - 9200:9200
     ulimits:
       memlock:
         soft: -1
         hard: -1
     volumes:
       - /usr/share/elasticsearch/data
-    # Exposed for development.
-    ports:
-      - 9200:9200
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.0
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - bootstrap.memory_lock=true
+      - cluster.initial_master_nodes=es01,es02
+      - cluster.name=tfedb
+      - discovery.seed_hosts=es01
+      - node.name=es02
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /usr/share/elasticsearch/data
 
   # Provisioning
   provision:
     image: tfedb-data:latest
     depends_on:
-      - es
+      - es01
+      - es02
     deploy:
       restart_policy:
         condition: none
     environment:
-      ES_URL: 'http://es:9200'
+      ES_URL: 'http://es01:9200,http://es02:9200'
 
   # API
   api:
     image: tfedb-api:latest
     depends_on:
-      - es
+      - es01
+      - es02
     environment:
       CORS_DOMAINS: "*.tfedb.com,localhost"
-      ES_URL: 'http://es:9200'
+      ES_URL: 'http://es01:9200,http://es02:9200'
     networks:
       - default
       - external
