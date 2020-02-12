@@ -70,7 +70,16 @@ type multiGetResponse struct {
 }
 
 func (db *esDb) FetchAll(t EntityType, ids []EntityId) ([]Entity, error) {
-	r := strings.NewReader("{ \"docs\": [ { \"_index\": \"group\", \"_id\": \"65\" } ] }")
+	// huzzah for building a giant string
+	s := "{ \"docs\":["
+	for i, entityId := range ids {
+		if i > 0 {
+			s += ","
+		}
+		s += fmt.Sprintf("{ \"_index\": \"%v\", \"_id\": \"%v\" }", t, entityId)
+	}
+	s += "]}"
+	r := strings.NewReader(s)
 	response, err := db.client.Mget(r)
 	if err != nil {
 		return nil, err

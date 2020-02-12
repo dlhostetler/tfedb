@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/graphql-go/graphql"
+	log "github.com/sirupsen/logrus"
 )
 
 func stringsToEnumValues(values []string) graphql.EnumValueConfigMap {
@@ -39,24 +40,53 @@ func targetEntityId(v interface{}) EntityId {
 
 func fieldEntityResolver(db Db, entityType EntityType, field string) graphql.FieldResolveFn {
 	return func(p graphql.ResolveParams) (interface{}, error) {
-		if m, ok := p.Source.(map[string]interface{}); ok {
-			return db.Fetch(entityType, targetEntityId(m[field]))
+		var fieldVal interface{}
+		switch m := p.Source.(type) {
+		case map[string]interface{}:
+			fieldVal = m[field]
+		case GenericEntity:
+			fieldVal = m[field]
+		default:
+			log.WithFields(map[string]interface{}{
+				"entityType":  entityType,
+				"field":       field,
+				"sourceNull?": p.Source == nil,
+				"sourceType":  fmt.Sprintf("%T", p.Source),
+			}).Warn("Could not determine entity id from field.")
 		}
-		return nil, nil
+		if fieldVal == nil {
+			return nil, nil
+		}
+		x, err := db.Fetch(entityType, targetEntityId(fieldVal))
+		return x, err
 	}
 }
 
 func fieldEntitiesResolver(db Db, entityType EntityType, field string) graphql.FieldResolveFn {
 	return func(p graphql.ResolveParams) (interface{}, error) {
-		if m, ok := p.Source.(map[string]interface{}); ok {
-			targetEntityIdVals := m[field].([]interface{})
-			targetEntityIds := make([]EntityId, len(targetEntityIdVals))
-			for i, v := range targetEntityIdVals {
-				targetEntityIds[i] = targetEntityId(v)
-			}
-			return db.FetchAll(entityType, targetEntityIds)
+		var fieldVals []interface{}
+		switch m := p.Source.(type) {
+		case map[string]interface{}:
+			fieldVals = m[field].([]interface{})
+		case GenericEntity:
+			fieldVals = m[field].([]interface{})
+		default:
+			log.WithFields(map[string]interface{}{
+				"entityType":  entityType,
+				"field":       field,
+				"sourceNull?": p.Source == nil,
+				"sourceType":  fmt.Sprintf("%T", p.Source),
+			}).Warn("Could not determine entity ids from field.")
 		}
-		return nil, nil
+		if fieldVals == nil {
+			return nil, nil
+		}
+		targetEntityIds := make([]EntityId, len(fieldVals))
+		for i, v := range fieldVals {
+			targetEntityIds[i] = targetEntityId(v)
+		}
+		x, err := db.FetchAll(entityType, targetEntityIds)
+		return x, err
 	}
 }
 
@@ -751,7 +781,7 @@ func InitSchema(db Db) (graphql.Schema, error) {
 		Name:        "exit",
 		Description: "Connects two rooms.",
 		Fields: graphql.Fields{
-			"direction": &graphql.Field{
+			"dir": &graphql.Field{
 				Type: direction,
 			},
 			"fromRoom": &graphql.Field{
