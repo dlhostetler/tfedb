@@ -1,10 +1,10 @@
 (ns tfedb.es
   (:require [clojure.data.json :as json]
             [clojure.java.io :as java.io]
-            [robert.bruce :as bruce]
-            [clojure.string :as str])
+            [clojure.string :as str]
+            [robert.bruce :as bruce])
   (:import (java.net URL ConnectException)
-           (org.apache.http HttpHost)
+           (org.apache.http ConnectionClosedException HttpHost)
            (org.elasticsearch.action.admin.cluster.health ClusterHealthRequest)
            (org.elasticsearch.action.admin.indices.delete DeleteIndexRequest)
            (org.elasticsearch.action.bulk BulkRequest)
@@ -35,11 +35,34 @@
   (let [request (-> (ClusterHealthRequest.)
                     (.timeout "30s")
                     ;; try waiting for green, but timeout for status purposes
-                    (.waitForStatus ClusterHealthStatus/GREEN))]
-    (-> client
-        (.cluster)
-        (.health request RequestOptions/DEFAULT)))
+                    (.waitForStatus ClusterHealthStatus/GREEN))
+        status (-> client
+                   (.cluster)
+                   (.health request RequestOptions/DEFAULT)
+                   (.getStatus))]
+    (when (not= ClusterHealthStatus/GREEN status)
+      (throw (ex-info "Cluster status was not green."
+                      {:reason :not-green
+                       :status (-> status str str/lower-case keyword)}))))
   client)
+
+(defn- error-hook [ex]
+  (let [d (ex-data ex)]
+    (cond
+     ;; couldn't hit ES
+     (or (instance? ConnectException ex)
+         (instance? ConnectionClosedException ex))
+     (do
+       (println "ES is unavailable. Trying again.")
+       true)
+     ;; wasn't green
+     (= :not-green (:reason d))
+     (do
+       (println "ES is" (str (-> d :status name) ".") "Trying again.")
+       true)
+     ;; some other random error
+     :else
+     (throw ex))))
 
 (defn ->safe-client []
   (let [client (->client)]
@@ -47,12 +70,7 @@
       {:decay (fn [ms]
                 ;; double the wait every time, but only up to a max of 30s
                 (min (* 2 ms) 30000))
-       :error-hook (fn [ex]
-                     (if (instance? ConnectException ex)
-                       (do
-                         (println "ES is unavailable. Trying again.")
-                         true)
-                       (throw ex)))
+       :error-hook error-hook
        :sleep 1000
        :tries :unlimited}
       #(wait-for-green client))))

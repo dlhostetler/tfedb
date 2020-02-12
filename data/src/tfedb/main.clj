@@ -208,9 +208,14 @@
             :let [mapping (get mappings entity-type)]]
       (println "Indexing" (str (name entity-type) "..."))
       (if mapping
-        (es/index-all! client
-                       entity-type
-                       mapping
-                       (vals entities-by-id)
-                       {:force true})
+        (try
+          (es/index-all! client
+                         entity-type
+                         mapping
+                         (vals entities-by-id)
+                         {:force false})
+          (catch Exception e
+            (if-let [d (ex-data e)]
+              (println (.getMessage e) d)
+              (.printStackTrace e))))
         (println "No mapping for" (str (name entity-type) ",") "skipping.")))))
