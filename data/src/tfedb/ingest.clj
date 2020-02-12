@@ -98,7 +98,7 @@
 ;; ===========
 
 (defn- associate-entity [entity {:keys [id type]}]
-  (let [k (keyword (str (name type) "s"))]
+  (let [k (keyword (str (name type) "Ids"))]
     (update entity k (fnil conj []) id)))
 
 (defn associate-entities [entity other-entities]
