@@ -1,5 +1,6 @@
 @import 'styles/Colors';
 @import 'styles/components/Search';
+@import 'styles/pages/Entity';
 @import 'styles/pages/Front';
 @import 'styles/pages/Search';
 
@@ -31,7 +32,8 @@ body::after {
 
 body a {
   color: $primaryColor;
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: $lightPrimaryColor;
 }
 
 input {

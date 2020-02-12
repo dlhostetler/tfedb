@@ -1,0 +1,21 @@
+.entity {
+  padding: 20px;
+}
+
+.entity > .name {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.entity > .description {
+  margin-top: 5px;
+  text-align: justify;
+}
+
+.room > .exits {
+  margin-top: 20px;
+}
+
+.room > .exits .exit {
+  margin: 5px 0;
+}
