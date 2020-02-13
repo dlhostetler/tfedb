@@ -6,9 +6,9 @@ interface Props {
   name: string;
 }
 
-const EntityName: React.FunctionComponent<Props> = props => {
+const Name: React.FunctionComponent<Props> = props => {
   const { className, name } = props;
   return <div className={classnames('name', className)}>{name}</div>;
 };
 
-export default EntityName;
+export default Name;

@@ -4,10 +4,14 @@ import { get } from 'lodash';
 import { useParams } from 'react-router-dom';
 import { useGraphql } from '../../../../../hooks';
 import List from '../../../../common/List';
-import Entity from '../../../../entity/Entity';
-import EntityName from '../../../../entity/EntityName';
-import EntityDescription from '../../../../entity/EntityDescription';
+import {
+  Entity,
+  EntityDescription,
+  EntityName,
+  EntitySubheader,
+} from '../../../../entity';
 import Exit from './Exit';
+import Spawn from './Spawn';
 
 interface RoomResult {
   room: entity.Room;
@@ -19,7 +23,8 @@ interface Params {
 
 const query = `query Room($roomId: String) {
   room(id: $roomId) {
-        description
+    area
+    description
     exits {
       dir
       fromRoom {
@@ -39,6 +44,21 @@ const query = `query Room($roomId: String) {
       }
     }
     name
+    spawns {
+      mob {
+        appearance
+        herePrefix
+        hereSuffix
+        id
+        name
+      }
+      object {
+        herePrefix
+        hereSuffix
+        id
+        name
+      }
+    }
   }
 }`;
 
@@ -51,10 +71,16 @@ const RoomPage: React.FunctionComponent = () => {
   return (
     <Entity className="room" error={error} isLoading={isLoading}>
       <EntityName name={get(room, 'name', 'n/a')} />
+      <EntitySubheader text={get(room, 'area')} />
       <EntityDescription description={get(room, 'description')} />
       <List<entity.Exit> className="exits" items={get(room, 'exits', [])}>
         {exit => {
           return <Exit exit={exit} key={exit.dir} />;
+        }}
+      </List>
+      <List<entity.Spawn> className="spawns" items={get(room, 'spawns', [])}>
+        {(spawn, index) => {
+          return <Spawn spawn={spawn} key={index} />;
         }}
       </List>
     </Entity>

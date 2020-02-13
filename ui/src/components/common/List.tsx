@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface Props<T> {
-  children: (item: T) => JSX.Element;
+  children: (item: T, index: number) => JSX.Element;
   className?: string;
   items: T[] | null;
 }

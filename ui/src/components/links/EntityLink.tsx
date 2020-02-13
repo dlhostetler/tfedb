@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 interface EntityLinkProps {
-  className: string;
+  className?: string;
   id: string;
   type: string;
 }

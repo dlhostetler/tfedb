@@ -1,3 +1,5 @@
+@import '../Colors';
+
 .entity {
   padding: 20px;
 }
@@ -7,9 +9,25 @@
   font-weight: bold;
 }
 
-.entity > .description {
+.entity > .subheader {
+  color: $secondaryColor;
   margin-top: 5px;
+}
+
+.entity > .description {
+  font-size: 1.1em;
+  margin-top: 20px;
   text-align: justify;
+}
+
+.entity > .section {
+  margin-top: 20px;
+}
+
+.entity > .section .title {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .room > .exits {
@@ -18,4 +36,28 @@
 
 .room > .exits .exit {
   margin: 5px 0;
+}
+
+.room > .exits .exit .link {
+  font-weight: bold;
+}
+
+.room > .spawns {
+  margin-top: 20px;
+}
+
+.room > .spawns .spawn {
+  margin: 5px 0;
+}
+
+.room > .spawns .spawn .prefix {
+  margin-right: 7px;
+}
+
+.room > .spawns .spawn .name {
+  font-weight: bold;
+}
+
+.room > .spawns .spawn .suffix {
+  margin-left: 7px;
 }

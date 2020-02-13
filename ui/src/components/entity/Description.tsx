@@ -6,11 +6,11 @@ interface Props {
   description?: string | null;
 }
 
-const EntityDescription: React.FunctionComponent<Props> = props => {
+const Description: React.FunctionComponent<Props> = props => {
   const { className, description } = props;
   return (
     <div className={classnames('description', className)}>{description}</div>
   );
 };
 
-export default EntityDescription;
+export default Description;
