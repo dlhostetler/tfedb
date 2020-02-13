@@ -1268,7 +1268,7 @@ func InitSchema(db Db) (graphql.Schema, error) {
 			Resolve:     fieldEntityResolver(db, "mob", "mobId"),
 		},
 		"mobs": &graphql.Field{
-			Type:    graphql.NewList(recipe),
+			Type:    graphql.NewList(mob),
 			Resolve: fieldEntitiesResolver(db, "mob", "mobIds"),
 		},
 		"name": &graphql.Field{
@@ -1291,7 +1291,7 @@ func InitSchema(db Db) (graphql.Schema, error) {
 			Type: graphql.NewList(restriction),
 		},
 		"rooms": &graphql.Field{
-			Type:    graphql.NewList(object),
+			Type:    graphql.NewList(room),
 			Resolve: fieldEntitiesResolver(db, "room", "roomIds"),
 		},
 		"size": &graphql.Field{
