@@ -1267,6 +1267,10 @@ func InitSchema(db Db) (graphql.Schema, error) {
 			Description: "The mob for which this is a corpse for (if this is a corpse).",
 			Resolve:     fieldEntityResolver(db, "mob", "mobId"),
 		},
+		"mobs": &graphql.Field{
+			Type:    graphql.NewList(recipe),
+			Resolve: fieldEntitiesResolver(db, "mob", "mobIds"),
+		},
 		"name": &graphql.Field{
 			Type: graphql.String,
 		},
@@ -1285,6 +1289,10 @@ func InitSchema(db Db) (graphql.Schema, error) {
 		},
 		"restriction": &graphql.Field{
 			Type: graphql.NewList(restriction),
+		},
+		"rooms": &graphql.Field{
+			Type:    graphql.NewList(object),
+			Resolve: fieldEntitiesResolver(db, "room", "roomIds"),
 		},
 		"size": &graphql.Field{
 			Type: graphql.NewList(wearSize),
