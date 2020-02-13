@@ -60,17 +60,28 @@
   (println "Cross referencing...")
   (->> records
        (cross-reference :exit :keyId :object :id :unlocksExitIds)
+       (cross-reference :mob
+                        (fn [mob] (->> mob :objects (map :objectId)))
+                        :object
+                        :id
+                        :mobIds)
        (cross-reference :object :keyId :object :id :unlocksContainerIds)
        (cross-reference :recipe
-                        (fn [recipe]
-                          (->> recipe
-                               :ingredients
-                               (map :objectId)))
+                        (fn [recipe] (->> recipe :ingredients (map :objectId)))
                         :object
                         :id
                         :ingredientForIds)
        (cross-reference :recipe :objectId :object :id :recipeIds)
-       (cross-reference :spawn :mobId :mob :roomId :roomIds)
+       (cross-reference :room
+                        (fn [room] (->> room :spawns (filter #(= :mob (:spawnType %))) (map :spawnId)))
+                        :mob
+                        :id
+                        :roomIds)
+       (cross-reference :room
+                        (fn [room] (->> room :spawns (filter #(= :object (:spawnType %))) (map :spawnId)))
+                        :object
+                        :id
+                        :roomIds)
        (cross-reference :trainer :skills :skill :id :trainerIds)))
 
 ;; Constructor
