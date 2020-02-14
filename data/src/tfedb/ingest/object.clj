@@ -46,7 +46,7 @@
     {:anti (flag/flags->set flag/anti antiFlags)
      :flags (flag/flags->set flag/object [extraFlags0 extraFlags1])
      :subtype (nth flag/object-type type)
-     :wear (flag/flags->set flag/wear wearFlags)}))
+     :wearLocations (flag/flags->set flag/wear wearFlags)}))
 
 (defn- read-info1 [^BufferedReader r]
   (let [[restrictionFlags sizeFlags materialFlags affectFlags0 affectFlags1
