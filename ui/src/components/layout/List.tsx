@@ -6,9 +6,13 @@ interface Props<T> {
   items: T[] | null;
 }
 
+function wrapItem(element: JSX.Element) {
+  return <li>{element}</li>;
+}
+
 function List<T>(props: Props<T>) {
   const { children: fn, className, items } = props;
-  return <div className={className}>{items && items.map(fn)}</div>;
+  return <ul className={className}>{items && items.map(fn).map(wrapItem)}</ul>;
 }
 
 export default List;

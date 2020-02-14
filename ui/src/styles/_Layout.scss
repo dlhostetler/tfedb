@@ -1,0 +1,20 @@
+@import './Colors';
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.layout.row {
+  display: flex;
+}
+
+.layout.row > * {
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.titled-border {
+  border: 2px solid $primaryColor;
+  border-radius: 5px;
+}

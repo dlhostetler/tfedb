@@ -3,6 +3,12 @@ export interface Affect {
   type: string;
 }
 
+export interface Dice {
+  number: number;
+  plus: number;
+  sides: number;
+}
+
 export interface Exit {
   dir: string;
   fromRoom: Room;
@@ -25,13 +31,38 @@ export interface Mob {
 }
 
 export interface Object {
+  ac: number;
+  acGlobal: number;
   affects: Affect[];
+  anti: string[];
+  attack: number;
+  blocks: number;
+  capacity: number;
+  charges: number;
+  cost: number;
+  damage: Dice;
+  durability: number;
+  enchantment: number;
+  flags: string[];
+  halflife: number;
   herePrefix: string;
   hereSuffix: string;
   id: string;
+  key: Object;
+  layers: string[];
+  light: number;
+  limit: number;
+  materials: string[];
   mobs: Mob[];
   name: string;
-  spawnType: string;
+  nourishment: number;
+  repair: number;
+  size: number;
+  subtype: string;
+  unlocksContainers: Object[];
+  unlocksExits: Exit[];
+  wearLocations: string[];
+  weight: number;
 }
 
 export interface Race {

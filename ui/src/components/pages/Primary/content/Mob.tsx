@@ -3,7 +3,7 @@ import * as entity from '../../../../types/entity';
 import { get } from 'lodash';
 import { useParams } from 'react-router-dom';
 import { useGraphql } from '../../../../hooks';
-import List from '../../../common/List';
+import List from '../../../layout/List';
 import {
   Entity,
   EntityDescription,
