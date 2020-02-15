@@ -1,23 +1,25 @@
 import React from 'react';
 import * as entity from '../../../../../types/entity';
-import { get } from 'lodash';
+import { get, isEmpty, sortBy } from 'lodash';
 import { useParams } from 'react-router-dom';
 import { useGraphql } from '../../../../../hooks';
-import List from '../../../../layout/List';
 import {
   Entity,
+  EntityHere,
   EntityName,
   EntitySection,
   EntitySubheader,
 } from '../../../../entity';
-import EntityLink from '../../../../links/EntityLink';
 import Row from '../../../../layout/Row';
-import TitledBorder from '../../../../layout/TitledBorder';
-import Table from '../../../../layout/Table';
-import NamedValue from '../../../../layout/NamedValue';
 import WearableInfo from './WearableInfo';
 import SpecialInfo from './SpecialInfo';
 import BasicInfo from './BasicInfo';
+import Metadata from './Metadata';
+import Descriptions from './Descriptions';
+import Mobs from '../../../../entity/Mobs';
+import Rooms from '../../../../entity/Rooms';
+import Recipes from '../../../../entity/Recipes';
+import Objects from '../../../../entity/Objects';
 
 interface ObjectResult {
   object: entity.Object;
@@ -35,34 +37,77 @@ const query = `query Object($objectId: String) {
       amount
       type
     }
+    anti
+    attack
     blocks
     capacity
     charges
     cost
+    creator
     damage {
       number
-      plus sides
+      plus
+      sides
+    }
+    descriptions {
+      description
+      keywords
     }
     durability
     enchantment
     flags
     halflife
+    herePluralPrefix
+    herePluralSuffix
+    herePrefix
+    hereSuffix
+    id
+    ingredientFor {
+      object {
+        id
+        name
+      }
+    }
     key {
       id
       name
     }
     layers
+    level
     light
     limit
+    materials
+    mob {
+      appearance
+      id
+      name
+    }
     mobs {
       appearance
       id
       name
     }
-    materials
     name
+    namePlural
     nourishment
+    recipes {
+      id
+      mob {
+        appearance
+        id
+        name
+      }
+      room {
+        id
+        name
+      }
+    }
     repair
+    restriction
+    rooms {
+      id
+      name
+    }
     size
     subtype
     unlocksContainers {
@@ -79,10 +124,19 @@ const query = `query Object($objectId: String) {
         name
       }
     }
+    updater
     wearLocations
     weight
   }
 }`;
+
+function ingredientObjects(object: entity.Object) {
+  const ingredientRecipes = object.ingredientFor || [];
+  return sortBy(
+    ingredientRecipes.map(r => r.object),
+    'name'
+  );
+}
 
 const ObjectPage: React.FunctionComponent = () => {
   const { objectId } = useParams<Params>();
@@ -97,19 +151,42 @@ const ObjectPage: React.FunctionComponent = () => {
     <Entity className="object" error={error} isLoading={isLoading}>
       <EntityName name={object.name} />
       <EntitySubheader text={object.subtype} />
+      <EntityHere
+        includePrefix={true}
+        link={false}
+        name={object.name}
+        plural={false}
+        prefix={object.herePrefix}
+        suffix={object.hereSuffix}
+      />
+      <EntityHere
+        includePrefix={true}
+        link={false}
+        name={object.namePlural}
+        plural={true}
+        prefix={object.herePluralPrefix}
+        suffix={object.herePluralSuffix}
+      />
+      <EntitySection title="Description">
+        <Descriptions object={object} />
+      </EntitySection>
       <Row>
         <BasicInfo object={object} />
         <WearableInfo object={object} />
         <SpecialInfo object={object} />
       </Row>
-      <EntitySection title="Mobs">
-        <List<entity.Mob> items={get(object, 'mobs', [])}>
-          {mob => (
-            <EntityLink id={mob.id} key={mob.id} type="mob">
-              {mob.name || mob.appearance}
-            </EntityLink>
-          )}
-        </List>
+      <EntitySection title="Source">
+        <Row>
+          <Mobs mobs={object.mobs} />
+          <Rooms rooms={object.rooms} />
+          <Recipes recipes={object.recipes} />
+        </Row>
+      </EntitySection>
+      <EntitySection title="Ingredient For" visible={!isEmpty(object.ingredientFor)}>
+        <Objects objects={ingredientObjects(object)} />
+      </EntitySection>
+      <EntitySection title="Metadata">
+        <Metadata object={object} />
       </EntitySection>
     </Entity>
   );

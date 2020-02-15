@@ -1,16 +1,18 @@
 import React from 'react';
-import classnames from 'classnames';
 import { pull } from 'lodash';
 import * as entity from '../../../../../types/entity';
 import Table from '../../../../layout/Table';
 import NamedValue from '../../../../layout/NamedValue';
 import TitledBorder from '../../../../layout/TitledBorder';
 import { prettyDice } from '../../../../../format/dice';
+import { arrayToString } from '../../../../../format/array';
+import Anti from './Anti';
 
 interface Props {
   className?: string;
   object: entity.Object;
 }
+
 function WearableInfo(props: Props) {
   const { object } = props;
   return (
@@ -28,9 +30,10 @@ function WearableInfo(props: Props) {
         <NamedValue name="Repair" value={object.repair} />
         <NamedValue
           name="Slot"
-          value={pull(object.wearLocations, 'take').join(', ')}
+          value={arrayToString(pull(object.wearLocations, 'take'))}
         />
       </Table>
+      <Anti anti={object.anti} />
     </TitledBorder>
   );
 }

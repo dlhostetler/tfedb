@@ -3,6 +3,11 @@ export interface Affect {
   type: string;
 }
 
+export interface Description {
+  keywords: string;
+  description: string;
+}
+
 export interface Dice {
   number: number;
   plus: number;
@@ -40,33 +45,51 @@ export interface Object {
   capacity: number;
   charges: number;
   cost: number;
+  creator: string;
   damage: Dice;
+  descriptions: Description[];
   durability: number;
   enchantment: number;
   flags: string[];
   halflife: number;
+  herePluralPrefix: string;
+  herePluralSuffix: string;
   herePrefix: string;
   hereSuffix: string;
   id: string;
+  ingredientFor: Recipe[];
   key: Object;
   layers: string[];
   light: number;
   limit: number;
   materials: string[];
+  mob: Mob;
   mobs: Mob[];
   name: string;
+  namePlural: string;
   nourishment: number;
+  recipes: Recipe[];
   repair: number;
+  restriction: string;
+  rooms: Room[];
   size: number;
   subtype: string;
   unlocksContainers: Object[];
   unlocksExits: Exit[];
+  updater: string;
   wearLocations: string[];
   weight: number;
 }
 
 export interface Race {
   name: string;
+}
+
+export interface Recipe {
+  id: string;
+  mob: Mob;
+  object: Object;
+  room: Room;
 }
 
 export interface Room {

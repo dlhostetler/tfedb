@@ -1,54 +1,39 @@
 import React from 'react';
-import classnames from 'classnames';
 import * as entity from '../../../../../types/entity';
-import EntityLink from '../../../../links/EntityLink';
+import { EntityHere } from '../../../../entity';
 
 interface Props {
   className?: string;
   spawn: entity.Spawn;
 }
 
-function withArticle(prefix: string | null, name: string) {
-  const s = prefix || name;
-  if (prefix) {
-    prefix = ` ${prefix}`;
-  } else {
-    prefix = '';
-  }
-  const firstChar = s.substr(0, 1);
-  if (['a', 'e', 'i', 'o', 'u'].includes(firstChar)) {
-    return `An${prefix}`;
-  }
-  return `A${prefix}`;
-}
-
-function mobInfo(spawn: entity.Spawn) {
+function mobHereProps(spawn: entity.Spawn) {
   if (!spawn.mob) {
     return null;
   }
-  let name = spawn.mob.name;
-  let prefix = spawn.mob.herePrefix;
-  if (!name) {
-    name = spawn.mob.appearance;
-    prefix = withArticle(spawn.mob.herePrefix, name);
-  }
   return {
     id: spawn.mob.id,
-    name: name,
-    prefix: prefix,
+    includePrefix: Boolean(spawn.mob.name),
+    link: true,
+    name: spawn.mob.name || spawn.mob.appearance,
+    plural: false,
+    prefix: spawn.mob.herePrefix,
     suffix: spawn.mob.hereSuffix,
     type: 'mob',
   };
 }
 
-function objectInfo(spawn: entity.Spawn) {
+function objectHereProps(spawn: entity.Spawn) {
   if (!spawn.object) {
     return null;
   }
   return {
     id: spawn.object.id,
+    includePrefix: true,
+    link: true,
     name: spawn.object.name,
-    prefix: withArticle(spawn.object.herePrefix, spawn.object.name),
+    plural: false,
+    prefix: spawn.object.herePrefix,
     suffix: spawn.object.hereSuffix,
     type: 'object',
   };
@@ -56,19 +41,11 @@ function objectInfo(spawn: entity.Spawn) {
 
 function Spawn(props: Props) {
   const { className, spawn } = props;
-  const spawnInfo = mobInfo(spawn) || objectInfo(spawn);
-  if (!spawnInfo) {
+  const hereProps = mobHereProps(spawn) || objectHereProps(spawn);
+  if (!hereProps) {
     return null;
   }
-  return (
-    <div className={classnames('spawn', className)}>
-      {spawnInfo.prefix && <span className="prefix">{spawnInfo.prefix}</span>}
-      <EntityLink className="name" id={spawnInfo.id} type={spawnInfo.type}>
-        {spawnInfo.name}
-      </EntityLink>
-      <span className="suffix">{spawnInfo.suffix}</span>
-    </div>
-  );
+  return <EntityHere className={className} {...hereProps} />;
 }
 
 export default Spawn;

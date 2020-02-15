@@ -6,8 +6,8 @@ interface Props<T> {
   items: T[] | null;
 }
 
-function wrapItem(element: JSX.Element) {
-  return <li>{element}</li>;
+function wrapItem(element: JSX.Element, index: number) {
+  return <li key={index}>{element}</li>;
 }
 
 function List<T>(props: Props<T>) {

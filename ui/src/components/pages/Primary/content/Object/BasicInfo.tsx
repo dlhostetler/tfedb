@@ -3,6 +3,7 @@ import * as entity from '../../../../../types/entity';
 import TitledBorder from '../../../../layout/TitledBorder';
 import Table from '../../../../layout/Table';
 import NamedValue from '../../../../layout/NamedValue';
+import { arrayToString } from '../../../../../format/array';
 
 interface Props {
   className?: string;
@@ -18,7 +19,7 @@ function BasicInfo(props: Props) {
         <NamedValue name="Durability" value={object.durability} />
         <NamedValue name="Light" value={object.light} />
         <NamedValue name="Limit" value={object.limit} />
-        <NamedValue name="Materials" value={object.materials.join(', ')} />
+        <NamedValue name="Materials" value={arrayToString(object.materials)} />
         <NamedValue name="Nourishment" value={object.nourishment} />
         <NamedValue name="Repair" value={object.repair} />
         <NamedValue name="Size" value={object.size} />

@@ -75,12 +75,12 @@ const RoomPage: React.FunctionComponent = () => {
       <EntityDescription description={get(room, 'description')} />
       <List<entity.Exit> className="exits" items={get(room, 'exits', [])}>
         {exit => {
-          return <Exit exit={exit} key={exit.dir} />;
+          return <Exit exit={exit} />;
         }}
       </List>
       <List<entity.Spawn> className="spawns" items={get(room, 'spawns', [])}>
-        {(spawn, index) => {
-          return <Spawn spawn={spawn} key={index} />;
+        {(spawn) => {
+          return <Spawn spawn={spawn} />;
         }}
       </List>
     </Entity>
