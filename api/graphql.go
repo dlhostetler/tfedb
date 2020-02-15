@@ -64,12 +64,12 @@ func fieldEntityResolver(db Db, entityType EntityType, field string) graphql.Fie
 
 func fieldEntitiesResolver(db Db, entityType EntityType, field string) graphql.FieldResolveFn {
 	return func(p graphql.ResolveParams) (interface{}, error) {
-		var fieldVals []interface{}
+		var fieldValue interface{}
 		switch m := p.Source.(type) {
 		case map[string]interface{}:
-			fieldVals = m[field].([]interface{})
+			fieldValue = m[field]
 		case GenericEntity:
-			fieldVals = m[field].([]interface{})
+			fieldValue = m[field]
 		default:
 			log.WithFields(map[string]interface{}{
 				"entityType":  entityType,
@@ -78,11 +78,12 @@ func fieldEntitiesResolver(db Db, entityType EntityType, field string) graphql.F
 				"sourceType":  fmt.Sprintf("%T", p.Source),
 			}).Warn("Could not determine entity ids from field.")
 		}
-		if fieldVals == nil {
+		if fieldValue == nil {
 			return nil, nil
 		}
-		targetEntityIds := make([]EntityId, len(fieldVals))
-		for i, v := range fieldVals {
+		idInterfaces := fieldValue.([]interface{})
+		targetEntityIds := make([]EntityId, len(idInterfaces))
+		for i, v := range idInterfaces {
 			targetEntityIds[i] = targetEntityId(v)
 		}
 		x, err := db.FetchAll(entityType, targetEntityIds)
