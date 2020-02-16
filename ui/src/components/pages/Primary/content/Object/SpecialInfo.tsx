@@ -14,14 +14,14 @@ function SpecialInfo(props: Props) {
   const { object } = props;
   return (
     <TitledBorder title="Special">
-      <List<string> items={object.flags}>
-        {flag => {
-          return <Flag flag={flag} />;
-        }}
-      </List>
       <List<entity.Affect> items={object.affects}>
         {affect => {
           return <Affect affect={affect} />;
+        }}
+      </List>
+      <List<string> items={object.flags}>
+        {flag => {
+          return <Flag flag={flag} />;
         }}
       </List>
     </TitledBorder>

@@ -11,13 +11,25 @@
 
 .entity > .subheader {
   color: $secondaryColor;
+  margin-bottom: 20px;
   margin-top: 5px;
 }
 
 .entity > .description {
   font-size: 1.1em;
-  margin-top: 20px;
   text-align: justify;
+}
+
+.entity .here .name {
+  margin: 0 7px;
+}
+
+.entity .recipes .mob {
+  margin: 0 7px;
+}
+
+.entity .recipes .room {
+  margin-left: 7px;
 }
 
 .entity > .section {
@@ -28,6 +40,14 @@
   font-size: 1.5em;
   font-weight: bold;
   margin-bottom: 10px;
+}
+
+.object .affect > * {
+  margin-right: 7px;
+}
+
+.object .anti {
+  margin-top: 20px;
 }
 
 .room > .exits {

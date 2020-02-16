@@ -1,4 +1,5 @@
 import React from 'react';
+import { get } from 'lodash';
 import classnames from 'classnames';
 import * as entity from '../../../../../types/entity';
 
@@ -14,14 +15,42 @@ function sign(affect: entity.Affect) {
   return '+';
 }
 
+const humanizedAffects = {
+  acid: 'Resist acid',
+  age: 'Age',
+  armor: 'AC',
+  cold: 'Resist cold',
+  constitution: 'Constitution',
+  damroll: 'Damage roll',
+  dexterity: 'Dexterity',
+  electricity: 'Resist electricity',
+  fire: 'Resist fire',
+  hit_regen: 'Hitpoint regen',
+  hitroll: 'Hit roll',
+  hp: 'Hitpoints',
+  intelligence: 'Intelligence',
+  magic: 'Resist magic',
+  mana: 'Mana',
+  mana_regen: 'Mana regen',
+  mind: 'Mind',
+  move: 'Move',
+  move_regen: 'Move regen',
+  poison: 'Resist poison',
+  strength: 'Strength',
+  wisdom: 'Wisdom',
+};
+
+function humanizeAffect(affect: string) {
+  return get(humanizedAffects, affect, 'Unknown affect');
+}
+
 function Affect(props: Props) {
   const { affect, className } = props;
   return (
     <div className={classnames('affect', className)}>
-      <span>{affect.type}</span>
-      by
-      <span>{sign(affect)}</span>
-      <span>{Math.abs(affect.amount)}</span>
+      {`${humanizeAffect(affect.type)} by ${sign(affect)}${Math.abs(
+        affect.amount
+      )}`}
     </div>
   );
 }

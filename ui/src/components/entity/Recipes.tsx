@@ -15,15 +15,15 @@ function Recipes(props: Props) {
     return null;
   }
   return (
-    <List<entity.Recipe> items={recipes}>
+    <List<entity.Recipe> className="recipes" items={recipes}>
       {recipe => (
         <div>
           Made by
-          <EntityLink id={recipe.mob.id} type="mob">
+          <EntityLink className="mob" id={recipe.mob.id} type="mob">
             {recipe.mob.name || recipe.mob.appearance}
           </EntityLink>
           in
-          <EntityLink id={recipe.room.id} type="room">
+          <EntityLink className="room" id={recipe.room.id} type="room">
             {recipe.room.name}
           </EntityLink>
         </div>
