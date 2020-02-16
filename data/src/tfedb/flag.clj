@@ -361,8 +361,30 @@
    :road
    :shallows])
 
-(def spawn-mob 3)
-(def spawn-object 4)
+(def spawn-mob-flag 3)
+(def spawn-mob
+  [:reroll ;; not sure what this is
+   nil
+   nil
+   nil
+   nil
+   :leader
+   :follower
+   :sentinel
+   :night
+   :day
+   :aggressive])
+
+(def spawn-object-flag 4)
+(def spawn-object
+  [:reroll ;; not sure what this is
+   nil
+   nil
+   nil
+   nil
+   :container
+   :inside
+   :unknown])
 
 (def wearable-size
   [:custom
@@ -427,6 +449,8 @@
 
 (defn flags->set [lookup i-or-is]
   (let [flags (coerce-flags i-or-is)]
-    (into #{} (for [i (range (count lookup))
-                    :when (on?* flags i)]
-                (nth lookup i)))))
+    (->> (for [i (range (count lookup))
+               :when (on?* flags i)]
+           (nth lookup i))
+         (remove nil?)
+         (into #{}))))

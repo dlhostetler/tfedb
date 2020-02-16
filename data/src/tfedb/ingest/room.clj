@@ -101,7 +101,7 @@
   (re-matches #"[0-9]+ [0-9]+ [0-9]+ .?[0-9]+ [0-9]+" line))
 
 (defn- spawn-type [flags]
-  (if (flag/on? flags flag/spawn-mob) :mob :object))
+  (if (flag/on? flags flag/spawn-mob-flag) :mob :object))
 
 (defn- value->position [value]
   (cond
@@ -115,14 +115,16 @@
     :unknown))
 
 (defn- read-spawn [line]
-  (let [[spawn-id flags chances value liquid] (numbers/line->ints line)]
-    ;; TODO: the flags seem like they can contain more info, but the reset
-    ;; flags are all muddled
+  (let [[spawn-id flags chances value liquid] (numbers/line->ints line)
+        spawn-type (spawn-type flags)]
     {:chances chances
+     :flags (if (= :mob spawn-type)
+              (flag/flags->set flag/spawn-mob flags)
+              (flag/flags->set flag/spawn-object flags))
      :liquidId liquid
      :position (value->position value)
      :spawnId spawn-id
-     :spawnType (spawn-type flags)
+     :spawnType spawn-type
      :type :spawn
      :value value}))
 
