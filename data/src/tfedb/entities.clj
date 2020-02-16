@@ -72,6 +72,7 @@
                         :id
                         :ingredientForIds)
        (cross-reference :recipe :objectId :object :id :recipeIds)
+       (cross-reference :recipe :roomId :room :id :recipeIds)
        (cross-reference :room
                         (fn [room] (->> room :spawns (filter #(= :mob (:spawnType %))) (map :spawnId)))
                         :mob
