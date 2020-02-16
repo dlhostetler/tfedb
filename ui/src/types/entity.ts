@@ -24,6 +24,11 @@ export interface Exit {
   toRoom: Room;
 }
 
+export interface Ingredient {
+  numRequired: number;
+  object: Object;
+}
+
 export interface Mob {
   appearance: string;
   description: string;
@@ -87,6 +92,7 @@ export interface Race {
 
 export interface Recipe {
   id: string;
+  ingredients: Ingredient[];
   mob: Mob;
   object: Object;
   room: Room;
@@ -98,6 +104,7 @@ export interface Room {
   exits: Exit[] | null;
   id: string;
   name: string;
+  recipes: Recipe[];
   spawns: Spawn[];
 }
 

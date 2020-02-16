@@ -14,6 +14,7 @@ import {
 import Exit from './Exit';
 import Objects from '../../../../entity/Objects';
 import Spawns from './Spawns';
+import Custom from './Custom';
 
 interface RoomResult {
   room: entity.Room;
@@ -46,6 +47,19 @@ const query = `query Room($roomId: String) {
       }
     }
     name
+    recipes {
+      ingredients {
+        numRequired
+        object {
+          id
+          name
+        }
+      }
+      object {
+        id
+        name
+      }
+    }
     spawns {
       mob {
         appearance
@@ -109,6 +123,7 @@ const RoomPage: React.FunctionComponent = () => {
       >
         <Objects objects={shopInventoryObjects} />
       </EntitySection>
+      <Custom room={room} />
     </Entity>
   );
 };

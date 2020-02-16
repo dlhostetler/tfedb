@@ -15,7 +15,7 @@ function Rooms(props: Props) {
     return null;
   }
   return (
-    <List<entity.Room> items={rooms}>
+    <List<entity.Room> className="rooms" items={rooms}>
       {room => (
         <EntityLink id={room.id} type="room">
           {room.name}

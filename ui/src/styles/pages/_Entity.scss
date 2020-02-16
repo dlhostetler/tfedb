@@ -20,6 +20,10 @@
   text-align: justify;
 }
 
+.entity .here a.name {
+  color: $highlightColor;
+}
+
 .entity .here .name {
   margin-right: 7px;
 }
@@ -28,12 +32,24 @@
   margin-right: 7px;
 }
 
+.entity .mobs li {
+  margin: 4px 0;
+}
+
+.entity .objects li {
+  margin: 4px 0;
+}
+
 .entity .recipes .mob {
   margin: 0 7px;
 }
 
 .entity .recipes .room {
   margin-left: 7px;
+}
+
+.entity .rooms li {
+  margin: 4px 0;
 }
 
 .entity > .section {
@@ -64,6 +80,22 @@
 
 .room > .exits .exit .link {
   font-weight: bold;
+}
+
+.room .recipes .recipe {
+  margin-bottom: 20px;
+}
+
+.room .recipes .recipe .ingredients {
+  margin-left: 20px;
+}
+
+.room .recipes .recipe .ingredients .ingredient {
+  margin: 5px 0;
+}
+
+.room .recipes .recipe .ingredients .ingredient .numRequired {
+  margin-right: 10px;
 }
 
 .room > .spawns {

@@ -16,7 +16,7 @@ function Objects(props: Props) {
   }
   objects = sortBy(objects, 'name');
   return (
-    <List<entity.Object> items={objects}>
+    <List<entity.Object> className="objects" items={objects}>
       {object => (
         <EntityLink id={object.id} type="object">
           {object.name}
