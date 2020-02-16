@@ -1392,6 +1392,10 @@ func InitSchema(db Db) (graphql.Schema, error) {
 		"pois": &graphql.Field{
 			Type: graphql.NewList(poi),
 		},
+		"recipes": &graphql.Field{
+			Type:    graphql.NewList(recipe),
+			Resolve: fieldEntitiesResolver(db, "recipe", "recipeIds"),
+		},
 		"sector": &graphql.Field{
 			Type: sector,
 		},
