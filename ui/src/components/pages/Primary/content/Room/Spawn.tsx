@@ -13,7 +13,7 @@ function mobHereProps(spawn: entity.Spawn) {
   }
   return {
     id: spawn.mob.id,
-    includePrefix: Boolean(spawn.mob.name),
+    includePrefix: !Boolean(spawn.mob.name),
     link: true,
     name: spawn.mob.name || spawn.mob.appearance,
     plural: false,

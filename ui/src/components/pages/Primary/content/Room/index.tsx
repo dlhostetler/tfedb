@@ -1,6 +1,6 @@
 import React from 'react';
 import * as entity from '../../../../../types/entity';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { useParams } from 'react-router-dom';
 import { useGraphql } from '../../../../../hooks';
 import List from '../../../../layout/List';
@@ -8,10 +8,12 @@ import {
   Entity,
   EntityDescription,
   EntityName,
+  EntitySection,
   EntitySubheader,
 } from '../../../../entity';
 import Exit from './Exit';
-import Spawn from './Spawn';
+import Objects from '../../../../entity/Objects';
+import Spawns from './Spawns';
 
 interface RoomResult {
   room: entity.Room;
@@ -58,9 +60,24 @@ const query = `query Room($roomId: String) {
         id
         name
       }
+      position
     }
   }
 }`;
+
+function isInventorySpawn(spawn: entity.Spawn) {
+  return spawn.position === 'inventory';
+}
+
+function shopInventory(spawns: entity.Spawn[]) {
+  const objects: entity.Object[] = [];
+  for (const spawn of spawns) {
+    if (isInventorySpawn(spawn) && spawn.object) {
+      objects.push(spawn.object);
+    }
+  }
+  return objects;
+}
 
 const RoomPage: React.FunctionComponent = () => {
   const { roomId } = useParams<Params>();
@@ -68,6 +85,13 @@ const RoomPage: React.FunctionComponent = () => {
     roomId,
   });
   const room = get(result, 'room');
+  if (!room) {
+    return null;
+  }
+  const spawns = get(room, 'spawns', []).filter(
+    spawn => !isInventorySpawn(spawn)
+  );
+  const shopInventoryObjects = shopInventory(room.spawns);
   return (
     <Entity className="room" error={error} isLoading={isLoading}>
       <EntityName name={get(room, 'name', 'n/a')} />
@@ -78,11 +102,13 @@ const RoomPage: React.FunctionComponent = () => {
           return <Exit exit={exit} />;
         }}
       </List>
-      <List<entity.Spawn> className="spawns" items={get(room, 'spawns', [])}>
-        {(spawn) => {
-          return <Spawn spawn={spawn} />;
-        }}
-      </List>
+      <Spawns spawns={spawns} />
+      <EntitySection
+        title="Shop Inventory"
+        visible={!isEmpty(shopInventoryObjects)}
+      >
+        <Objects objects={shopInventoryObjects} />
+      </EntitySection>
     </Entity>
   );
 };

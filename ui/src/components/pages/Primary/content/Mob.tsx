@@ -33,17 +33,6 @@ const query = `query Mob($mobId: String) {
       id
       name
     }
-    spawns {
-      mob {
-        appearance
-        id
-        name
-      }
-      object {
-        id
-        name
-      }
-    }
   }
 }`;
 
@@ -53,12 +42,15 @@ const MobPage: React.FunctionComponent = () => {
     mobId,
   });
   const mob = get(result, 'mob');
+  if (!mob) {
+    return null;
+  }
   return (
     <Entity className="mob" error={error} isLoading={isLoading}>
-      <EntityName name={get(mob, 'name', 'n/a')} />
+      <EntityName name={mob.name || mob.appearance} />
       <EntitySubheader text={get(mob, 'race.name')} />
       <EntityDescription description={get(mob, 'description')} />
-      <EntitySection title="Mobs">
+      <EntitySection title="Rooms">
         <List<entity.Room> items={get(mob, 'rooms', [])}>
           {room => (
             <EntityLink id={room.id} type="room">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { isEmpty } from 'lodash';
+import { isEmpty, sortBy } from 'lodash';
 import * as entity from '../../types/entity';
 import List from '../layout/List';
 import EntityLink from '../links/EntityLink';
@@ -10,10 +10,11 @@ interface Props {
 }
 
 function Objects(props: Props) {
-  const { objects } = props;
+  let { objects } = props;
   if (isEmpty(objects)) {
     return null;
   }
+  objects = sortBy(objects, 'name');
   return (
     <List<entity.Object> items={objects}>
       {object => (

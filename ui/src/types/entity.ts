@@ -104,4 +104,5 @@ export interface Room {
 export interface Spawn {
   mob: Mob | null;
   object: Object | null;
+  position: string;
 }
