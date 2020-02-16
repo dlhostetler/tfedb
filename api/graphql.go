@@ -1246,7 +1246,7 @@ func InitSchema(db Db) (graphql.Schema, error) {
 		},
 		"key": &graphql.Field{
 			Type:    object,
-			Resolve: fieldEntityResolver(db, "liquid", "keyId"),
+			Resolve: fieldEntityResolver(db, "object", "keyId"),
 		},
 		"layers": &graphql.Field{
 			Type: graphql.NewList(wearLayer),
