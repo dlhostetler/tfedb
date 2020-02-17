@@ -535,6 +535,22 @@ func InitSchema(db Db) (graphql.Schema, error) {
 		}),
 	})
 
+	spawnFlag := graphql.NewEnum(graphql.EnumConfig{
+		Name: "spawnFlag",
+		Values: stringsToEnumValues([]string{
+			"aggressive",
+			"container",
+			"day",
+			"follower",
+			"inside",
+			"leader",
+			"night",
+			"reroll",
+			"sentinel",
+			"unknown",
+		}),
+	})
+
 	spawnPosition := graphql.NewEnum(graphql.EnumConfig{
 		Name: "spawnPosition",
 		Values: stringsToEnumValues([]string{
@@ -974,6 +990,9 @@ func InitSchema(db Db) (graphql.Schema, error) {
 		Fields: graphql.Fields{
 			"chances": &graphql.Field{
 				Type: graphql.Int,
+			},
+			"flags": &graphql.Field{
+				Type: graphql.NewList(spawnFlag),
 			},
 			"liquid": &graphql.Field{
 				Type:        liquid,
