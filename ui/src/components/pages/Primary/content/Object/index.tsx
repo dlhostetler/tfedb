@@ -174,9 +174,7 @@ const ObjectPage: React.FunctionComponent = () => {
       >
         <Objects objects={ingredientObjects(object)} />
       </EntitySection>
-      <EntitySection title="Metadata">
-        <Metadata object={object} />
-      </EntitySection>
+      <Metadata object={object} />
     </Entity>
   );
 };

@@ -17,6 +17,8 @@ import Spawns from './Spawns';
 import Custom from './Custom';
 import Poi from './Poi';
 import Action from './Action';
+import Metadata from './Metadata';
+import Info from './Info';
 
 interface RoomResult {
   room: entity.Room;
@@ -42,6 +44,8 @@ const query = `query Room($roomId: String) {
       verbs
     }
     area
+    author
+    comments
     description
     exits {
       dir
@@ -61,6 +65,8 @@ const query = `query Room($roomId: String) {
         name
       }
     }
+    flags
+    level
     name
     pois {
       description
@@ -79,6 +85,8 @@ const query = `query Room($roomId: String) {
         name
       }
     }
+    sector
+    size
     spawns {
       flags
       liquid {
@@ -105,6 +113,7 @@ const query = `query Room($roomId: String) {
       }
       position
     }
+    status
   }
 }`;
 
@@ -148,6 +157,7 @@ const RoomPage: React.FunctionComponent = () => {
         }}
       </List>
       <Spawns spawns={spawns} />
+      <Info room={room} />
       <EntitySection
         title="Shop Inventory"
         visible={!isEmpty(shopInventoryObjects)}
@@ -172,6 +182,7 @@ const RoomPage: React.FunctionComponent = () => {
           }}
         </List>
       </EntitySection>
+      <Metadata room={room} />
     </Entity>
   );
 };

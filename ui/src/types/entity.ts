@@ -118,13 +118,20 @@ export interface Recipe {
 export interface Room {
   actions: Action[];
   area: string;
+  author: string;
+  comments: string;
   description?: string;
   exits: Exit[] | null;
+  flags: string[];
+  level: number;
   id: string;
   name: string;
   pois: Poi[],
   recipes: Recipe[];
+  sector: string;
+  size: string;
   spawns: Spawn[];
+  status: string;
 }
 
 export interface Script {

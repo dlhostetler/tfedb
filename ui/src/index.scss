@@ -43,6 +43,10 @@ input {
   font-family: 'Inconsolata', monospace;
 }
 
+pre {
+  white-space: pre-wrap;
+}
+
 .center {
   left: 50%;
   margin: 0;

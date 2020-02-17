@@ -6,16 +6,19 @@ import { EntitySection } from '../../../../entity';
 
 interface Props {
   className?: string;
-  object: entity.Object;
+  room: entity.Room;
 }
 
 function Metadata(props: Props) {
-  const { object } = props;
+  const { room } = props;
   return (
     <EntitySection title="Metadata">
       <Table>
-        <NamedValue name="Created by" value={object.creator} />
-        <NamedValue name="Updated by" value={object.updater} />
+        <NamedValue name="Author" value={room.author} />
+        <NamedValue name="Comments">
+          <pre>{room.comments}</pre>
+        </NamedValue>
+        <NamedValue name="Status" value={room.status} />
       </Table>
     </EntitySection>
   );

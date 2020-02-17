@@ -2,9 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 import * as entity from '../../types/entity';
 import List from '../layout/List';
-import { get } from 'lodash';
-import Poi from '../pages/Primary/content/Room/Poi';
-import { EntitySection } from './index';
 
 interface DescriptionProps {
   description: entity.ScriptDescription;
@@ -29,7 +26,7 @@ const Script: React.FunctionComponent<Props> = props => {
   const { className, script } = props;
   return (
     <div className={classnames('script', className)}>
-      <div className="code">{script.code}</div>
+      <pre className="code">{script.code}</pre>
       <List<entity.ScriptDescription>
         className="pois"
         items={script.descriptions}
