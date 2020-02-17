@@ -26,13 +26,17 @@ function Prefix(props: Props) {
 }
 
 function Link(props: Props) {
-  const { link, object } = props;
+  const { link, object, plural } = props;
+  let name = object.name;
+  if (plural) {
+    name = object.namePlural;
+  }
   if (!link) {
-    return <span className="name">{object.name}</span>;
+    return <span className="name">{name}</span>;
   }
   return (
     <EntityLink className="name" id={object.id} type="object">
-      {object.name}
+      {name}
     </EntityLink>
   );
 }
