@@ -708,18 +708,11 @@ func InitSchema(db Db) (graphql.Schema, error) {
 			"flags": &graphql.Field{
 				Type: graphql.NewList(actionFlag),
 			},
-			"id": &graphql.Field{
-				Type: graphql.ID,
-			},
-			"room": &graphql.Field{
-				Type:    room,
-				Resolve: fieldEntityResolver(db, "room", "roomId"),
-			},
 			"script": &graphql.Field{
 				Type: script,
 			},
 			"targets": &graphql.Field{
-				Type: graphql.NewList(graphql.String),
+				Type: graphql.String,
 			},
 			"trigger": &graphql.Field{
 				Type: actionTrigger,
