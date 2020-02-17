@@ -61,6 +61,11 @@ const query = `query Room($roomId: String) {
       }
     }
     spawns {
+      flags
+      liquid {
+        id
+        name
+      }
       mob {
         appearance
         herePrefix
@@ -72,7 +77,12 @@ const query = `query Room($roomId: String) {
         herePrefix
         hereSuffix
         id
+        key {
+          id
+          name
+        }
         name
+        subtype
       }
       position
     }

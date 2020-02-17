@@ -1,5 +1,6 @@
 import React from 'react';
 import { isEmpty, sortBy } from 'lodash';
+import classnames from 'classnames';
 import * as entity from '../../types/entity';
 import List from '../layout/List';
 import EntityLink from '../links/EntityLink';
@@ -10,13 +11,16 @@ interface Props {
 }
 
 function Objects(props: Props) {
-  let { objects } = props;
+  let { className, objects } = props;
   if (isEmpty(objects)) {
     return null;
   }
   objects = sortBy(objects, 'name');
   return (
-    <List<entity.Object> className="objects" items={objects}>
+    <List<entity.Object>
+      className={classnames('objects', className)}
+      items={objects}
+    >
       {object => (
         <EntityLink id={object.id} type="object">
           {object.name}

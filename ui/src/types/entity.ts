@@ -29,6 +29,11 @@ export interface Ingredient {
   object: Object;
 }
 
+export interface Liquid {
+  id: string;
+  name: string;
+}
+
 export interface Mob {
   appearance: string;
   description: string;
@@ -109,6 +114,8 @@ export interface Room {
 }
 
 export interface Spawn {
+  flags: string[];
+  liquid: Liquid | null;
   mob: Mob | null;
   object: Object | null;
   position: string;

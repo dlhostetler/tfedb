@@ -5,10 +5,10 @@ import { useParams } from 'react-router-dom';
 import { useGraphql } from '../../../../../hooks';
 import {
   Entity,
-  EntityHere,
   EntityName,
   EntitySection,
   EntitySubheader,
+  ObjectHere,
 } from '../../../../entity';
 import Row from '../../../../layout/Row';
 import WearableInfo from './WearableInfo';
@@ -151,22 +151,8 @@ const ObjectPage: React.FunctionComponent = () => {
     <Entity className="object" error={error} isLoading={isLoading}>
       <EntityName name={object.name} />
       <EntitySubheader text={object.subtype} />
-      <EntityHere
-        includePrefix={true}
-        link={false}
-        name={object.name}
-        plural={false}
-        prefix={object.herePrefix}
-        suffix={object.hereSuffix}
-      />
-      <EntityHere
-        includePrefix={true}
-        link={false}
-        name={object.namePlural}
-        plural={true}
-        prefix={object.herePluralPrefix}
-        suffix={object.herePluralSuffix}
-      />
+      <ObjectHere link={false} plural={false} object={object} />
+      <ObjectHere link={false} plural={true} object={object} />
       <EntitySection title="Description">
         <Descriptions object={object} />
       </EntitySection>
@@ -182,7 +168,10 @@ const ObjectPage: React.FunctionComponent = () => {
           <Recipes recipes={object.recipes} />
         </Row>
       </EntitySection>
-      <EntitySection title="Ingredient For" visible={!isEmpty(object.ingredientFor)}>
+      <EntitySection
+        title="Ingredient For"
+        visible={!isEmpty(object.ingredientFor)}
+      >
         <Objects objects={ingredientObjects(object)} />
       </EntitySection>
       <EntitySection title="Metadata">
