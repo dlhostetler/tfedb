@@ -3,6 +3,7 @@ import Description from './Description';
 import _MobHere from './MobHere';
 import Name from './Name';
 import _ObjectHere from './ObjectHere';
+import _Script from './Script';
 import Section from './Section';
 import Subheader from './Subheader';
 
@@ -13,3 +14,4 @@ export const EntityName = Name;
 export const ObjectHere = _ObjectHere;
 export const EntitySection = Section;
 export const EntitySubheader = Subheader;
+export const Script = _Script;

@@ -1,3 +1,10 @@
+export interface Action {
+  script: Script;
+  targets: string;
+  trigger: string;
+  verbs: string;
+}
+
 export interface Affect {
   amount: number;
   type: string;
@@ -91,6 +98,11 @@ export interface Object {
   weight: number;
 }
 
+export interface Poi {
+  description: string;
+  keywords: string;
+}
+
 export interface Race {
   name: string;
 }
@@ -104,13 +116,26 @@ export interface Recipe {
 }
 
 export interface Room {
+  actions: Action[];
   area: string;
   description?: string;
   exits: Exit[] | null;
   id: string;
   name: string;
+  pois: Poi[],
   recipes: Recipe[];
   spawns: Spawn[];
+}
+
+export interface Script {
+  code: string;
+  descriptions: ScriptDescription[];
+  type: string;
+}
+
+export interface ScriptDescription {
+  placeholder: string;
+  value: string;
 }
 
 export interface Spawn {

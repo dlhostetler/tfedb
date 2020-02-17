@@ -4,9 +4,42 @@
   padding: 20px;
 }
 
+.entity .action {
+  border-bottom: 1px solid $secondaryColor;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.entity li:last-child .action {
+  border-bottom: none;
+}
+
+.entity .action label {
+  margin-right: 10px;
+}
+
 .entity > .name {
   font-size: 2em;
   font-weight: bold;
+}
+
+.entity .script {
+  margin: 10px 0;
+}
+
+.entity .script .code {
+  background-color: $secondaryColor;
+  color: black;
+  padding: 20px;
+}
+
+.entity .script .description {
+  font-size: 0.9em;
+  margin: 10px 0;
+}
+
+.entity .script .description .placeholder {
+  margin-bottom: 5px;
 }
 
 .entity > .subheader {
@@ -80,6 +113,23 @@
 
 .room > .exits .exit .link {
   font-weight: bold;
+}
+
+.room .action .targets .value {
+  color: $secondaryColor;
+}
+
+.room .action .verbs .value {
+  color: $secondaryColor;
+}
+
+.room .pois .poi {
+  margin-bottom: 20px;
+}
+
+.room .pois .poi .keywords {
+  color: $secondaryColor;
+  margin-bottom: 5px;
 }
 
 .room .recipes .recipe {

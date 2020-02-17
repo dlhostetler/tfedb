@@ -15,6 +15,8 @@ import Exit from './Exit';
 import Objects from '../../../../entity/Objects';
 import Spawns from './Spawns';
 import Custom from './Custom';
+import Poi from './Poi';
+import Action from './Action';
 
 interface RoomResult {
   room: entity.Room;
@@ -26,6 +28,19 @@ interface Params {
 
 const query = `query Room($roomId: String) {
   room(id: $roomId) {
+    actions {
+      script {
+        code
+        descriptions {
+          placeholder
+          value
+        }
+        type
+      }
+      targets
+      trigger
+      verbs
+    }
     area
     description
     exits {
@@ -47,6 +62,10 @@ const query = `query Room($roomId: String) {
       }
     }
     name
+    pois {
+      description
+      keywords
+    }
     recipes {
       ingredients {
         numRequired
@@ -95,6 +114,9 @@ function isInventorySpawn(spawn: entity.Spawn) {
 
 function shopInventory(spawns: entity.Spawn[]) {
   const objects: entity.Object[] = [];
+  if (!spawns) {
+    return objects;
+  }
   for (const spawn of spawns) {
     if (isInventorySpawn(spawn) && spawn.object) {
       objects.push(spawn.object);
@@ -112,9 +134,8 @@ const RoomPage: React.FunctionComponent = () => {
   if (!room) {
     return null;
   }
-  const spawns = get(room, 'spawns', []).filter(
-    spawn => !isInventorySpawn(spawn)
-  );
+  let spawns = room.spawns || [];
+  spawns = spawns.filter(spawn => !isInventorySpawn(spawn));
   const shopInventoryObjects = shopInventory(room.spawns);
   return (
     <Entity className="room" error={error} isLoading={isLoading}>
@@ -134,6 +155,23 @@ const RoomPage: React.FunctionComponent = () => {
         <Objects objects={shopInventoryObjects} />
       </EntitySection>
       <Custom room={room} />
+      <EntitySection title="Actions">
+        <List<entity.Action>
+          className="actions"
+          items={get(room, 'actions', [])}
+        >
+          {action => {
+            return <Action action={action} />;
+          }}
+        </List>
+      </EntitySection>
+      <EntitySection title="Points of Interest">
+        <List<entity.Poi> className="pois" items={get(room, 'pois', [])}>
+          {poi => {
+            return <Poi poi={poi} />;
+          }}
+        </List>
+      </EntitySection>
     </Entity>
   );
 };
