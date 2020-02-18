@@ -26,6 +26,7 @@ const Script: React.FunctionComponent<Props> = props => {
   const { className, script } = props;
   return (
     <div className={classnames('script', className)}>
+      {script.type && <div className="type">{script.type}</div>}
       <pre className="code">{script.code}</pre>
       <List<entity.ScriptDescription>
         className="pois"

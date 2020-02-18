@@ -50,6 +50,7 @@
 
 .entity > .description {
   font-size: 1.1em;
+  margin-bottom: 20px;
   text-align: justify;
 }
 
@@ -87,14 +88,34 @@
   margin: 4px 0;
 }
 
-.entity > .section {
+.entity .section {
   margin-top: 20px;
 }
 
-.entity > .section .title {
+.entity .section .title {
   font-size: 1.5em;
   font-weight: bold;
   margin-bottom: 10px;
+}
+
+.mob .affects {
+  margin-top: 20px;
+}
+
+.mob .attributes {
+  margin: 10px 0;
+}
+
+.mob .resists {
+  margin: 10px 0;
+}
+
+.mob .scripts .script {
+  border-bottom: 1px solid $secondaryColor;
+}
+
+.mob .scripts li:last-child .script {
+  border-bottom: none;
 }
 
 .object .affect > * {

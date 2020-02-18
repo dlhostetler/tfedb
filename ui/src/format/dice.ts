@@ -4,7 +4,7 @@ export function prettyDice(dice: entity.Dice) {
   if (!dice) {
     return null;
   }
-  if (dice.number === 0) {
+  if (dice.number === 0 || !dice.sides) {
     return '0';
   }
   let s = `${dice.number}d${dice.sides}`;

@@ -10,6 +10,22 @@ export interface Affect {
   type: string;
 }
 
+export interface Alignment {
+  id: string;
+  name: string;
+}
+
+export interface Armor {
+  armor: string;
+  chance: number;
+  name: string;
+}
+
+export interface Attribute {
+  type: string;
+  value: number;
+}
+
 export interface Description {
   keywords: string;
   description: string;
@@ -17,8 +33,8 @@ export interface Description {
 
 export interface Dice {
   number: number;
-  plus: number;
-  sides: number;
+  plus?: number;
+  sides?: number;
 }
 
 export interface Exit {
@@ -29,6 +45,11 @@ export interface Exit {
   size: number;
   strength: number;
   toRoom: Room;
+}
+
+export interface Group {
+  id: string;
+  name: string;
 }
 
 export interface Ingredient {
@@ -42,14 +63,54 @@ export interface Liquid {
 }
 
 export interface Mob {
+  adult: number;
+  affects: string[];
+  alignment: Alignment;
   appearance: string;
+  appearancePlural: string;
+  armor: Armor[];
+  attributes: Attribute[];
+  attacks: Script;
+  corpse: Object;
+  creator: string;
   description: string;
+  dice: MobDice[];
+  gold: number;
+  group: Group;
+  herePluralPrefix: string;
+  herePluralSuffix: string;
   herePrefix: string;
   hereSuffix: string;
   id: string;
+  keywords: string;
+  level: number;
+  maturity: number;
   name: string;
+  nation: Nation;
+  objects: Mobject[];
   race: Race;
+  resists: Resist[];
   rooms: Room[];
+  scripts: Script[];
+  sex: string;
+  size: string;
+  skeleton: Mob;
+  weight: number;
+  zombie: Mob;
+}
+
+export interface MobDice {
+  dice: Dice;
+  purpose: string;
+}
+
+export interface Mobject {
+  object: Object;
+}
+
+export interface Nation {
+  id: string;
+  name: string;
 }
 
 export interface Object {
@@ -104,6 +165,7 @@ export interface Poi {
 }
 
 export interface Race {
+  id: string;
   name: string;
 }
 
@@ -113,6 +175,11 @@ export interface Recipe {
   mob: Mob;
   object: Object;
   room: Room;
+}
+
+export interface Resist {
+  type: string;
+  value: number;
 }
 
 export interface Room {
@@ -126,7 +193,7 @@ export interface Room {
   level: number;
   id: string;
   name: string;
-  pois: Poi[],
+  pois: Poi[];
   recipes: Recipe[];
   sector: string;
   size: string;
