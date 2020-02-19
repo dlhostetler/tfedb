@@ -85,6 +85,13 @@ class SearchInput extends React.Component<SearchInputProps, SearchInputState> {
     onSearch(value);
   };
 
+  onSuggestionClicked = () => {
+    this.setState({
+      suggestionsVisible: false,
+      value: '',
+    });
+  };
+
   async componentDidUpdate(
     prevProps: Readonly<SearchInputProps>,
     prevState: Readonly<SearchInputState>
@@ -110,7 +117,11 @@ class SearchInput extends React.Component<SearchInputProps, SearchInputState> {
           onKeyDown={this.onKeyDown}
           type="search"
         />
-        <Suggestions className="suggestions" suggestions={suggestions} />
+        <Suggestions
+          className="suggestions"
+          onClick={this.onSuggestionClicked}
+          suggestions={suggestions}
+        />
       </div>
     );
   }

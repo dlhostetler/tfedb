@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 interface EntityLinkProps {
   className?: string;
   id: string;
+  onClick?: () => void;
   type: string;
 }
 
@@ -12,9 +13,9 @@ function entityUrl(type: string, id: string) {
 }
 
 const EntityLink: React.FunctionComponent<EntityLinkProps> = props => {
-  const { children, className, id, type } = props;
+  const { children, className, id, onClick, type } = props;
   return (
-    <Link className={className} to={entityUrl(type, id)}>
+    <Link className={className} onClick={onClick} to={entityUrl(type, id)}>
       {children}
     </Link>
   );
