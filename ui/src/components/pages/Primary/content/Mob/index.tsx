@@ -18,6 +18,7 @@ import Rooms from '../../../../entity/Rooms';
 import Objects from '../../../../entity/Objects';
 import Metadata from './Metadata';
 import List from '../../../../layout/List';
+import { Title } from '../../../../common/Title';
 
 interface MobResult {
   mob: entity.Mob;
@@ -136,6 +137,7 @@ const MobPage: React.FunctionComponent = () => {
   }
   return (
     <Entity className="mob" error={error} isLoading={isLoading}>
+      <Title text={[mobId, mob.appearance || mob.name, 'mob']} />
       <EntityName name={mob.name || mob.appearance} />
       <EntitySubheader text={get(mob, 'race.name')} />
       <EntityDescription description={get(mob, 'description')} />

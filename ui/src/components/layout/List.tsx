@@ -12,7 +12,15 @@ function wrapItem(element: JSX.Element, index: number) {
 
 function List<T>(props: Props<T>) {
   const { children: fn, className, items } = props;
-  return <ul className={className}>{items && items.map(fn).map(wrapItem)}</ul>;
+  return (
+    <ul className={className}>
+      {items &&
+        items
+          .filter(i => Boolean(i))
+          .map(fn)
+          .map(wrapItem)}
+    </ul>
+  );
 }
 
 export default List;

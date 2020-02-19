@@ -20,6 +20,7 @@ import Mobs from '../../../../entity/Mobs';
 import Rooms from '../../../../entity/Rooms';
 import Recipes from '../../../../entity/Recipes';
 import Objects from '../../../../entity/Objects';
+import { Title } from '../../../../common/Title';
 
 interface ObjectResult {
   object: entity.Object;
@@ -149,6 +150,7 @@ const ObjectPage: React.FunctionComponent = () => {
   }
   return (
     <Entity className="object" error={error} isLoading={isLoading}>
+      <Title text={[objectId, object.name, 'object']} />
       <EntityName name={object.name} />
       <EntitySubheader text={object.subtype} />
       <ObjectHere link={false} plural={false} object={object} />
