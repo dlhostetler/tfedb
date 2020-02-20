@@ -68,6 +68,14 @@ services:
     ports:
       - 8080:8080
 
+  # UI
+  ui:
+    image: tfedb-ui:latest
+    depends_on:
+      - api
+    networks:
+      - external
+
 networks:
   external:
     external:
