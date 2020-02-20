@@ -78,5 +78,5 @@ services:
 
 networks:
   external:
-    external:
-      name: external
+    external: true
+    name: external
