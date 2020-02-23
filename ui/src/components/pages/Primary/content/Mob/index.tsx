@@ -1,6 +1,6 @@
 import React from 'react';
 import * as entity from '../../../../../types/entity';
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, map } from 'lodash';
 import { useParams } from 'react-router-dom';
 import { useGraphql } from '../../../../../hooks';
 import {
@@ -147,7 +147,7 @@ const MobPage: React.FunctionComponent = () => {
       </Row>
       <Row>
         <EntitySection title="Loot" visible={!isEmpty(mob.objects)}>
-          <Objects objects={mob.objects.map(o => o.object)} />
+          <Objects objects={map(mob.objects, o => o.object)} />
         </EntitySection>
         <EntitySection title="Rooms" visible={!isEmpty(mob.rooms)}>
           <Rooms rooms={mob.rooms} />

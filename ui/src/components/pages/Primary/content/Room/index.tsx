@@ -149,7 +149,7 @@ const RoomPage: React.FunctionComponent = () => {
   const shopInventoryObjects = shopInventory(room.spawns);
   return (
     <Entity className="room" error={error} isLoading={isLoading}>
-      <Title text={[roomId, room.name, 'room']} />
+      <Title text={[roomId, room.name, 'room  ']} />
       <EntityName name={get(room, 'name', 'n/a')} />
       <EntitySubheader text={get(room, 'area')} />
       <EntityDescription description={get(room, 'description')} />
