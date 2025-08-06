@@ -1,11 +1,11 @@
-@import '../Colors';
+@use '../Colors';
 
 .entity {
   padding: 20px;
 }
 
 .entity .action {
-  border-bottom: 1px solid $secondaryColor;
+  border-bottom: 1px solid Colors.$secondaryColor;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
@@ -28,7 +28,7 @@
 }
 
 .entity .script .code {
-  background-color: $secondaryColor;
+  background-color: Colors.$secondaryColor;
   color: black;
   padding: 20px;
 }
@@ -43,7 +43,7 @@
 }
 
 .entity > .subheader {
-  color: $secondaryColor;
+  color: Colors.$secondaryColor;
   margin-bottom: 20px;
   margin-top: 5px;
 }
@@ -63,7 +63,7 @@
 }
 
 .entity .here a {
-  color: $highlightColor;
+  color: Colors.$highlightColor;
 }
 
 .entity .mobs li {
@@ -75,12 +75,12 @@
 }
 
 .entity .recipes .mob {
-  color: $highlightColor;
+  color: Colors.$highlightColor;
   margin: 0 7px;
 }
 
 .entity .recipes .room {
-  color: $highlightColor;
+  color: Colors.$highlightColor;
   margin-left: 7px;
 }
 
@@ -111,7 +111,7 @@
 }
 
 .mob .scripts .script {
-  border-bottom: 1px solid $secondaryColor;
+  border-bottom: 1px solid Colors.$secondaryColor;
 }
 
 .mob .scripts li:last-child .script {
@@ -139,11 +139,11 @@
 }
 
 .room .action .targets .value {
-  color: $secondaryColor;
+  color: Colors.$secondaryColor;
 }
 
 .room .action .verbs .value {
-  color: $secondaryColor;
+  color: Colors.$secondaryColor;
 }
 
 .room .pois .poi {
@@ -151,7 +151,7 @@
 }
 
 .room .pois .poi .keywords {
-  color: $secondaryColor;
+  color: Colors.$secondaryColor;
   margin-bottom: 5px;
 }
 

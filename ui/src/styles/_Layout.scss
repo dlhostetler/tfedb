@@ -1,4 +1,4 @@
-@import './Colors';
+@use './Colors';
 
 ul {
   list-style-type: none;
@@ -15,6 +15,6 @@ ul {
 }
 
 .titled-border {
-  border: 2px solid $primaryColor;
+  border: 2px solid Colors.$primaryColor;
   border-radius: 5px;
 }

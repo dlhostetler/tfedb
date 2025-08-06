@@ -1,4 +1,4 @@
-@import '../Colors';
+@use '../Colors';
 
 #searchResults .results {
   margin: 0 auto;
@@ -41,5 +41,5 @@
 }
 
 #searchResults .results .result > .matches .match .value .highlight {
-  color: $highlightColor;
+  color: Colors.$highlightColor;
 }

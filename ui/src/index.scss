@@ -1,13 +1,13 @@
-@import 'styles/Colors';
-@import 'styles/Layout';
-@import 'styles/components/Search';
-@import 'styles/pages/Entity';
-@import 'styles/pages/Front';
-@import 'styles/pages/Search';
+@use 'styles/Colors';
+@use 'styles/Layout';
+@use 'styles/components/Search' as SearchComponent;
+@use 'styles/pages/Entity';
+@use 'styles/pages/Front';
+@use 'styles/pages/Search' as SearchPage;
 
 body {
-  background-color: $bgColor;
-  color: $primaryColor;
+  background-color: Colors.$bgColor;
+  color: Colors.$primaryColor;
   font-family: 'Inconsolata', monospace;
   height: 100%;
   margin: 0;
@@ -32,14 +32,14 @@ body::after {
 }
 
 body a {
-  color: $primaryColor;
+  color: Colors.$primaryColor;
   text-decoration: none;
 }
 
 input {
   background-color: transparent;
-  border: 1px solid $primaryColor;
-  color: $primaryColor;
+  border: 1px solid Colors.$primaryColor;
+  color: Colors.$primaryColor;
   font-family: 'Inconsolata', monospace;
 }
 
@@ -56,8 +56,8 @@ pre {
 }
 
 #header {
-  background-color: $bgColor;
-  border-bottom: solid 1px $primaryColor;
+  background-color: Colors.$bgColor;
+  border-bottom: solid 1px Colors.$primaryColor;
   display: flex;
   height: 32px;
   left: 0;
@@ -84,7 +84,7 @@ pre {
 }
 
 #content {
-  background-color: $bgColor;
+  background-color: Colors.$bgColor;
   bottom: 0;
   left: 0;
   overflow: auto;

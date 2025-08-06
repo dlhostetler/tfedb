@@ -1,4 +1,4 @@
-@import '../Colors';
+@use '../Colors';
 
 .search-input {
   display: inline-block;
@@ -11,7 +11,7 @@
 }
 
 .search-input .suggestions {
-  border: 1px solid $primaryColor;
+  border: 1px solid Colors.$primaryColor;
   border-top: none;
   display: none;
   position: absolute;
@@ -19,7 +19,7 @@
 }
 
 .search-input.suggestions-visible .suggestions {
-  background-color: $bgColor;
+  background-color: Colors.$bgColor;
   display: block;
 }
 
