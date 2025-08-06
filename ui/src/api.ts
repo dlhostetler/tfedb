@@ -8,8 +8,8 @@ axios.defaults.paramsSerializer = params => {
 
 function url(path: string) {
   let baseUrl = '';
-  if (process.env.REACT_APP_API_BASE_URL) {
-    baseUrl = process.env.REACT_APP_API_BASE_URL;
+  if (import.meta.env.VITE_API_BASE_URL) {
+    baseUrl = import.meta.env.VITE_API_BASE_URL;
   }
   return `${baseUrl}${path}`;
 }

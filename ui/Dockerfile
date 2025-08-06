@@ -4,7 +4,7 @@ ARG API_BASE_URL=https://api.tfedb.com
 COPY . /build
 WORKDIR /build
 RUN yarn install
-RUN echo "REACT_APP_API_BASE_URL=$API_BASE_URL" > .env
+RUN echo "VITE_API_BASE_URL=$API_BASE_URL" > .env
 RUN yarn build
 
 # second stage - packaging
