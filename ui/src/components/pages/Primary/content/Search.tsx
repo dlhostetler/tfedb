@@ -98,7 +98,7 @@ class SearchPage extends React.Component<Props, State> {
     const { results } = this.state;
     return (
       <div className="results">
-        {results.map(r => (
+        {results.map((r) => (
           <SearchResult key={r.id} result={r} />
         ))}
       </div>

@@ -134,7 +134,7 @@ const query = `query Object($objectId: String) {
 function ingredientObjects(object: entity.Object) {
   const ingredientRecipes = object.ingredientFor || [];
   return sortBy(
-    ingredientRecipes.map(r => r.object),
+    ingredientRecipes.map((r) => r.object),
     'name'
   );
 }

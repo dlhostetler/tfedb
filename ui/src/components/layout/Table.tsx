@@ -4,7 +4,7 @@ interface Props {
   className?: string;
 }
 
-export const Table: React.FunctionComponent<Props> = props => {
+export const Table: React.FunctionComponent<Props> = (props) => {
   const { children, className } = props;
   return (
     <table className={className}>

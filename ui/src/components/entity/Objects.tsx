@@ -11,7 +11,8 @@ interface Props {
 }
 
 function Objects(props: Props) {
-  let { className, objects } = props;
+  const { className } = props;
+  let { objects } = props;
   if (isEmpty(objects)) {
     return null;
   }
@@ -21,7 +22,7 @@ function Objects(props: Props) {
       className={classnames('objects', className)}
       items={objects}
     >
-      {object => (
+      {(object) => (
         <EntityLink id={object.id} type="object">
           {object.name}
         </EntityLink>

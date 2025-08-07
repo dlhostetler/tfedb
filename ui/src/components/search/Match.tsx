@@ -10,7 +10,7 @@ interface HighlightProps {
   value: string;
 }
 
-const Highlight: React.FunctionComponent<HighlightProps> = props => {
+const Highlight: React.FunctionComponent<HighlightProps> = (props) => {
   const { value } = props;
   const m = highlightRegex.exec(value);
   if (m) {
@@ -31,7 +31,7 @@ interface MatchProps {
   value: string[];
 }
 
-const Match: React.FunctionComponent<MatchProps> = props => {
+const Match: React.FunctionComponent<MatchProps> = (props) => {
   const { className, field, value } = props;
   const s = first(value) as string;
   if (!s) {
@@ -43,6 +43,7 @@ const Match: React.FunctionComponent<MatchProps> = props => {
       <div className="field">{field}</div>
       <div className="value">
         {values.map((h, i) => (
+          // eslint-disable-next-line @eslint-react/no-array-index-key
           <Highlight key={i} value={h} />
         ))}
       </div>

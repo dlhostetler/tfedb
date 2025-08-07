@@ -22,7 +22,7 @@ interface Props {
   script: entity.Script;
 }
 
-const Script: React.FunctionComponent<Props> = props => {
+const Script: React.FunctionComponent<Props> = (props) => {
   const { className, script } = props;
   return (
     <div className={classnames('script', className)}>
@@ -32,7 +32,7 @@ const Script: React.FunctionComponent<Props> = props => {
         className="pois"
         items={script.descriptions}
       >
-        {description => {
+        {(description) => {
           return <Description description={description} />;
         }}
       </List>

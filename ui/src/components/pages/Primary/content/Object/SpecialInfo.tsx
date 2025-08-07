@@ -15,12 +15,12 @@ function SpecialInfo(props: Props) {
   return (
     <TitledBorder title="Special">
       <List<entity.Affect> items={object.affects}>
-        {affect => {
+        {(affect) => {
           return <Affect affect={affect} />;
         }}
       </List>
       <List<string> items={object.flags}>
-        {flag => {
+        {(flag) => {
           return <Flag flag={flag} />;
         }}
       </List>

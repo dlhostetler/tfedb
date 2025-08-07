@@ -14,9 +14,7 @@ function prettyResist(resist: entity.Resist) {
 }
 
 function prettyResists(resists: entity.Resist[]) {
-  return sortBy(resists, 'type')
-    .map(prettyResist)
-    .join(' ');
+  return sortBy(resists, 'type').map(prettyResist).join(' ');
 }
 
 function Resists(props: Props) {

@@ -4,7 +4,7 @@ interface Props {
   error: any;
 }
 
-const Error: React.FunctionComponent<Props> = props => {
+const Error: React.FunctionComponent<Props> = (props) => {
   const { error } = props;
   return <div>{error.toString()}</div>;
 };

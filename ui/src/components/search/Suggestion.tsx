@@ -9,7 +9,7 @@ interface Props {
   suggestion: SearchSuggestion;
 }
 
-const Suggestion: React.FunctionComponent<Props> = props => {
+const Suggestion: React.FunctionComponent<Props> = (props) => {
   const { className, onClick, suggestion } = props;
   return (
     <EntityLink

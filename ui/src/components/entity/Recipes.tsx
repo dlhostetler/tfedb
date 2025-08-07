@@ -16,7 +16,7 @@ function Recipes(props: Props) {
   }
   return (
     <List<entity.Recipe> className="recipes" items={recipes}>
-      {recipe => (
+      {(recipe) => (
         <div>
           Made by
           <EntityLink className="mob" id={recipe.mob.id} type="mob">

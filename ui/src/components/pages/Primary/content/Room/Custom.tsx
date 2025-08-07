@@ -36,7 +36,7 @@ function Recipe(props: RecipeProps) {
         className="ingredients"
         items={recipe.ingredients}
       >
-        {ingredient => <Ingredient ingredient={ingredient} />}
+        {(ingredient) => <Ingredient ingredient={ingredient} />}
       </List>
     </div>
   );
@@ -57,7 +57,7 @@ function Custom(props: Props) {
       visible={!isEmpty(recipes)}
     >
       <List<entity.Recipe> className="recipes" items={recipes}>
-        {recipe => <Recipe recipe={recipe} />}
+        {(recipe) => <Recipe recipe={recipe} />}
       </List>
     </EntitySection>
   );

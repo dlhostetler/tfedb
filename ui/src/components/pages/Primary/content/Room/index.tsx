@@ -145,7 +145,7 @@ const RoomPage: React.FunctionComponent = () => {
     return null;
   }
   let spawns = room.spawns || [];
-  spawns = spawns.filter(spawn => !isInventorySpawn(spawn));
+  spawns = spawns.filter((spawn) => !isInventorySpawn(spawn));
   const shopInventoryObjects = shopInventory(room.spawns);
   return (
     <Entity className="room" error={error} isLoading={isLoading}>
@@ -154,7 +154,7 @@ const RoomPage: React.FunctionComponent = () => {
       <EntitySubheader text={get(room, 'area')} />
       <EntityDescription description={get(room, 'description')} />
       <List<entity.Exit> className="exits" items={get(room, 'exits', [])}>
-        {exit => {
+        {(exit) => {
           return <Exit exit={exit} />;
         }}
       </List>
@@ -172,14 +172,14 @@ const RoomPage: React.FunctionComponent = () => {
           className="actions"
           items={get(room, 'actions', [])}
         >
-          {action => {
+          {(action) => {
             return <Action action={action} />;
           }}
         </List>
       </EntitySection>
       <EntitySection title="Points of Interest">
         <List<entity.Poi> className="pois" items={get(room, 'pois', [])}>
-          {poi => {
+          {(poi) => {
             return <Poi poi={poi} />;
           }}
         </List>

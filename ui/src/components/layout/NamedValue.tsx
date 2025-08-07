@@ -8,7 +8,7 @@ interface Props {
   value?: string | number | null;
 }
 
-export const NamedValue: React.FunctionComponent<Props> = props => {
+export const NamedValue: React.FunctionComponent<Props> = (props) => {
   const { children, className, name, value } = props;
   if (isNull(value)) {
     return null;

@@ -147,7 +147,7 @@ const MobPage: React.FunctionComponent = () => {
       </Row>
       <Row>
         <EntitySection title="Loot" visible={!isEmpty(mob.objects)}>
-          <Objects objects={map(mob.objects, o => o.object)} />
+          <Objects objects={map(mob.objects, (o) => o.object)} />
         </EntitySection>
         <EntitySection title="Rooms" visible={!isEmpty(mob.rooms)}>
           <Rooms rooms={mob.rooms} />
@@ -158,7 +158,7 @@ const MobPage: React.FunctionComponent = () => {
       </EntitySection>
       <EntitySection title="Scripts" visible={!isEmpty(mob.scripts)}>
         <List<entity.Script> className="scripts" items={mob.scripts}>
-          {script => {
+          {(script) => {
             return <Script script={script} />;
           }}
         </List>

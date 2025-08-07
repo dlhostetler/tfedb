@@ -6,7 +6,7 @@ interface Props {
   name: string;
 }
 
-const Name: React.FunctionComponent<Props> = props => {
+const Name: React.FunctionComponent<Props> = (props) => {
   const { className, name } = props;
   return <div className={classnames('name', className)}>{name}</div>;
 };

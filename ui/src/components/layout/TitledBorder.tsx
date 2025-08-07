@@ -6,7 +6,7 @@ interface Props {
   title: string;
 }
 
-export const TitledBorder: React.FunctionComponent<Props> = props => {
+export const TitledBorder: React.FunctionComponent<Props> = (props) => {
   const { children, className, title } = props;
   return (
     <fieldset className={classnames('titled-border', className)}>

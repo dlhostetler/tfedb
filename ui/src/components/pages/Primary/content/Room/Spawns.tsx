@@ -37,7 +37,7 @@ function Spawns(props: Props) {
   let containerName = '';
   return (
     <List<entity.Spawn> className="spawns" items={spawns}>
-      {spawn => {
+      {(spawn) => {
         containerName = getContainerName(spawn, containerName);
         return <Spawn spawn={adjustSuffix(spawn, containerName)} />;
       }}

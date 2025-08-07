@@ -8,7 +8,7 @@ interface Props {
 }
 
 function prettify(s: string) {
-  return s.split(/\s+/).join(" ");
+  return s.split(/\s+/).join(' ');
 }
 
 function Poi(props: Props) {

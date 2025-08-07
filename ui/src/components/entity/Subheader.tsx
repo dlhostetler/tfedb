@@ -6,7 +6,7 @@ interface Props {
   text?: string;
 }
 
-const Subheader: React.FunctionComponent<Props> = props => {
+const Subheader: React.FunctionComponent<Props> = (props) => {
   const { className, text } = props;
   return <div className={classnames('subheader', className)}>{text}</div>;
 };

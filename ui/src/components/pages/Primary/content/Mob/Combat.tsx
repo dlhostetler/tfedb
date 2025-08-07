@@ -15,7 +15,7 @@ interface Props {
 }
 
 function findDice(allDice: entity.MobDice[], purpose: string): entity.Dice {
-  const mobDice = allDice.find(d => d.purpose === purpose);
+  const mobDice = allDice.find((d) => d.purpose === purpose);
   if (!mobDice) {
     return { number: 0 };
   }

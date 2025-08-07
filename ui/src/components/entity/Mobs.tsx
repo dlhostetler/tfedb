@@ -16,7 +16,7 @@ function Mobs(props: Props) {
   }
   return (
     <List<entity.Mob> items={mobs}>
-      {mob => (
+      {(mob) => (
         <EntityLink id={mob.id} type="mob">
           {mob.name || mob.appearance}
         </EntityLink>

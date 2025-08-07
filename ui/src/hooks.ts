@@ -12,6 +12,7 @@ export function useGraphql<T>(
   const [isLoading, setLoading] = useState(true);
   useEffect(
     () => {
+      // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
       setLoading(true);
       api
         .graphql(query, variables)
@@ -20,7 +21,7 @@ export function useGraphql<T>(
         .finally(() => setLoading(false));
     },
     // this is truly idiotic: https://github.com/facebook/react/issues/14476#issuecomment-471199055
-    [query, JSON.stringify(variables)] // eslint-disable-line react-hooks/exhaustive-deps
+    [query, JSON.stringify(variables)]
   );
 
   return {

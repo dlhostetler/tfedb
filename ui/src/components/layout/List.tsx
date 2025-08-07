@@ -16,7 +16,7 @@ function List<T>(props: Props<T>) {
     <ul className={className}>
       {items &&
         items
-          .filter(i => Boolean(i))
+          .filter((i) => Boolean(i))
           .map(fn)
           .map(wrapItem)}
     </ul>

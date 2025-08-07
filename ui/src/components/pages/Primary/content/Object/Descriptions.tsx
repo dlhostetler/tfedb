@@ -21,7 +21,7 @@ function Descriptions(props: Props) {
   const { object } = props;
   return (
     <List<entity.Description> items={object.descriptions}>
-      {description => {
+      {(description) => {
         return <Description description={description} />;
       }}
     </List>

@@ -10,7 +10,7 @@ interface Props {
   result: SearchResult;
 }
 
-const Result: React.FunctionComponent<Props> = props => {
+const Result: React.FunctionComponent<Props> = (props) => {
   const { className, result } = props;
   return (
     <div className={classnames('result', className)}>

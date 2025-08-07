@@ -8,7 +8,7 @@ interface Props {
   isLoading: boolean;
 }
 
-const Entity: React.FunctionComponent<Props> = props => {
+const Entity: React.FunctionComponent<Props> = (props) => {
   const { children, className, error, isLoading } = props;
   if (isLoading) {
     return <div className={'center'}>Loading...</div>;

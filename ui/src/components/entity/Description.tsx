@@ -6,7 +6,7 @@ interface Props {
   description?: string | null;
 }
 
-const Description: React.FunctionComponent<Props> = props => {
+const Description: React.FunctionComponent<Props> = (props) => {
   const { className, description } = props;
   return (
     <div className={classnames('description', className)}>{description}</div>

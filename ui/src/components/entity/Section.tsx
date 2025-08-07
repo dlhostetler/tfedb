@@ -11,7 +11,7 @@ const defaultProps = {
   visible: true,
 };
 
-const Section: React.FunctionComponent<Props> = props => {
+const Section: React.FunctionComponent<Props> = (props) => {
   const { children, className, title, visible } = Object.assign(
     {},
     defaultProps,

@@ -15,7 +15,7 @@ function renderNoSuggestions() {
 
 function renderSuggestions(props: Props) {
   const { onClick, suggestions } = props;
-  return suggestions.map(suggestion => (
+  return suggestions.map((suggestion) => (
     <Suggestion
       className="suggestion"
       key={`${suggestion.type}.${suggestion.id}`}
@@ -25,7 +25,7 @@ function renderSuggestions(props: Props) {
   ));
 }
 
-const Suggestions: React.FunctionComponent<Props> = props => {
+const Suggestions: React.FunctionComponent<Props> = (props) => {
   const { className, suggestions } = props;
   return (
     <div className={className}>

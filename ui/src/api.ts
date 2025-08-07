@@ -2,7 +2,7 @@ import axios from 'axios';
 import { get } from 'lodash';
 import qs from 'qs';
 
-axios.defaults.paramsSerializer = params => {
+axios.defaults.paramsSerializer = (params) => {
   return qs.stringify(params, { indices: false }); // param=value1&param=value2
 };
 
@@ -24,7 +24,7 @@ export function graphql(query: string, variables: GraphqlVariables) {
       query,
       variables,
     })
-    .then(response => get(response, 'data.data'));
+    .then((response) => get(response, 'data.data'));
 }
 
 export function search(query: string, size: number, fields: string[] = []) {
@@ -36,5 +36,5 @@ export function search(query: string, size: number, fields: string[] = []) {
         size,
       },
     })
-    .then(response => response.data);
+    .then((response) => response.data);
 }

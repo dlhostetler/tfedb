@@ -7,7 +7,7 @@ interface Props {
   spawn: entity.Spawn;
 }
 
-const Spawn: React.FunctionComponent<Props> = props => {
+const Spawn: React.FunctionComponent<Props> = (props) => {
   const { children, className, spawn } = props;
   if (spawn.mob) {
     return (
