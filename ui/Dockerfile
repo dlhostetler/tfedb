@@ -1,8 +1,12 @@
 # first stage - building
-FROM node:lts-buster-slim as builder
-ARG API_BASE_URL=https://api.tfedb.com
-COPY . /build
-WORKDIR /build
+FROM node:24 AS builder
+ARG API_BASE_URL=https://api.tfedb.pi.local
+
+RUN corepack enable
+
+COPY . /project
+WORKDIR /project
+
 RUN yarn install
 RUN echo "VITE_API_BASE_URL=$API_BASE_URL" > .env
 RUN yarn build
@@ -10,4 +14,4 @@ RUN yarn build
 # second stage - packaging
 FROM nginx
 COPY nginx/tfedb-ui.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /build/build /usr/share/nginx/html
+COPY --from=builder /project/build /usr/share/nginx/html

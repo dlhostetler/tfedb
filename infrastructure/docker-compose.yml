@@ -1,4 +1,3 @@
-version: '3.7'
 services:
   # Elasticsearch
   # =============
@@ -43,6 +42,9 @@ services:
   # Provisioning
   provision:
     image: tfedb-data:latest
+    build:
+      context: ../data
+      dockerfile: ../data/Dockerfile
     depends_on:
       - es01
       - es02
@@ -55,28 +57,27 @@ services:
   # API
   api:
     image: tfedb-api:latest
+    build:
+      context: ../api
+      dockerfile: ../api/Dockerfile
     depends_on:
       - es01
       - es02
     environment:
       CORS_DOMAINS: "*.tfedb.com,localhost"
       ES_URL: 'http://es01:9200,http://es02:9200'
-    networks:
-      - default
-      - external
-    # Exposed for development.
     ports:
       - 8080:8080
 
   # UI
   ui:
     image: tfedb-ui:latest
+    build:
+      args:
+        API_BASE_URL: http://localhost:8080
+      context: ../ui
+      dockerfile: ../ui/Dockerfile
+    ports:
+      - 80:80
     depends_on:
       - api
-    networks:
-      - external
-
-networks:
-  external:
-    external: true
-    name: external

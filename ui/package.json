@@ -45,6 +45,7 @@
   "private": true,
   "scripts": {
     "build": "vite build",
+    "build:docker": "docker build -t tfedb-ui:latest .",
     "dev": "vite",
     "lint": "eslint",
     "preview": "vite preview"
